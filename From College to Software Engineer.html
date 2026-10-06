@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From College to Software Engineer</title>
+<meta name="description" content="A practical, placement-focused software development program for college students. Learn, build, deploy, prepare and get placed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<style>
+/* ------------------------------------------------------------
+   Tokens
+------------------------------------------------------------ */
+:root{
+  --paper:#F5F6F1;
+  --paper2:#E9EDE3;
+  --ink:#15182B;
+  --ink2:#2A2F4B;
+  --muted:#586079;
+  --rule:#D3D8CA;
+  --signal:#FFC21A;
+
+  --learn:#0E7C74;   --learn-l:#35C9BB;
+  --build:#3F4FD0;   --build-l:#8493FF;
+  --present:#C93A6B; --present-l:#FF78A4;
+  --prove:#E5A400;   --prove-l:#FFC21A;
+
+  --r:6px;
+  --font-d:"Bricolage Grotesque","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --font-b:"Hanken Grotesk","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-m:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+
+/* ------------------------------------------------------------
+   Base
+------------------------------------------------------------ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--font-b);font-size:17px;line-height:1.6;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--font-d);letter-spacing:-.02em;line-height:1.05}
+h1:focus{outline:none}
+:focus-visible{outline:3px solid var(--build);outline-offset:3px}
+.dark :focus-visible{outline-color:var(--signal)}
+.wrap{width:min(1160px,calc(100% - 48px));margin-inline:auto}
+.skip{position:absolute;left:-999px;top:8px;background:var(--signal);color:var(--ink);padding:10px 16px;font-weight:700;z-index:100}
+.skip:focus{left:8px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+
+/* ------------------------------------------------------------
+   Header
+------------------------------------------------------------ */
+.top{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--font-d);font-weight:700;font-size:18px;letter-spacing:-.01em;text-decoration:none;color:#fff;white-space:nowrap}
+.brand svg{width:38px;height:16px;flex:none}
+.top nav ul{display:flex;gap:2px}
+.top nav a{display:block;position:relative;padding:8px 12px;color:#C4C8DE;text-decoration:none;font-size:15px;font-weight:500;border-radius:4px}
+.top nav a:hover{color:#fff}
+.top nav a[aria-current="page"]{color:#fff}
+.top nav a[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:2px;background:var(--signal)}
+.menu-btn{display:none;background:none;border:2px solid rgba(255,255,255,.3);border-radius:4px;padding:8px 12px;cursor:pointer;color:#fff;font-weight:600}
+
+@media (max-width:1100px){
+  .menu-btn{display:inline-flex}
+  .top nav{display:none;position:absolute;left:0;right:0;top:64px;background:var(--ink);padding:8px 24px 20px;border-bottom:1px solid rgba(255,255,255,.12)}
+  .top.open nav{display:block}
+  .top nav ul{flex-direction:column;gap:0}
+  .top nav a{padding:14px 4px;font-size:17px;border-bottom:1px solid rgba(255,255,255,.08);border-radius:0}
+  .top nav a[aria-current="page"]::after{left:4px;right:auto;width:36px;bottom:6px}
+}
+
+/* ------------------------------------------------------------
+   Shared components
+------------------------------------------------------------ */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:4px;border:2px solid transparent;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;transition:background .15s,border-color .15s}
+.btn-signal{background:var(--signal);color:var(--ink)}
+.btn-signal:hover{background:#FFD24F}
+.btn-ghost{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}
+.btn-ghost:hover{border-color:#fff}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-ink:hover{background:var(--ink2)}
+.btn-line{border-color:var(--ink);background:transparent;color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:#fff}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+.sec{padding:84px 0}
+.sec.alt{background:var(--paper2)}
+.sec.inkbg{background:var(--ink);color:#fff}
+.sec h2{font-size:clamp(30px,4.2vw,54px);margin-bottom:16px;max-width:22ch}
+.sec .intro{max-width:60ch;color:var(--muted);font-size:19px;margin-bottom:40px}
+.sec.inkbg .intro{color:#C4C8DE}
+
+.page-head{padding:68px 0 44px}
+.page-head h1{font-size:clamp(40px,6.4vw,84px);font-weight:800;letter-spacing:-.03em;margin-bottom:20px;max-width:16ch}
+.page-head p{font-size:20px;color:var(--muted);max-width:56ch}
+
+.chip{display:inline-block;padding:6px 13px;margin:0 6px 8px 0;border:1px solid var(--rule);border-radius:999px;background:#fff;font-size:14.5px;line-height:1.4}
+button.chip{cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+button.chip:hover{border-color:var(--ink)}
+button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--learn);color:#fff}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;border-bottom:2px solid var(--ink)}
+.tab{padding:12px 18px;margin-bottom:-2px;border:2px solid transparent;border-bottom:0;border-radius:4px 4px 0 0;background:transparent;color:var(--muted);font-weight:600;cursor:pointer}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.tabpanel{padding:32px 0 0}
+
+.ticklist li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--rule)}
+.ticklist li::before{content:"\2713";flex:none;display:grid;place-items:center;width:22px;height:22px;margin-top:2px;border-radius:50%;background:var(--learn);color:#fff;font-size:13px;font-weight:800}
+
+.fade-in{animation:fadeIn .28s ease-out}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ------------------------------------------------------------
+   Home: hero and route
+------------------------------------------------------------ */
+.hero{background:var(--ink);color:#fff;padding:72px 0 56px;overflow:hidden}
+.hero-top{display:grid;grid-template-columns:1.35fr 1fr;gap:56px;align-items:end}
+.hero h1{font-size:clamp(46px,8.4vw,116px);font-weight:800;line-height:.94;letter-spacing:-.04em}
+.hero h1 span{display:block}
+.hero-sub{font-size:21px;line-height:1.45;color:#E4E6F2;max-width:30ch;margin-bottom:14px}
+.hero-small{font-size:16px;color:#A9AECB;max-width:42ch;margin-bottom:28px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+
+.route{--d:28px;margin-top:72px;position:relative}
+.route-rail{position:absolute;left:calc(var(--d)/2);right:calc(var(--d)/2);top:calc(var(--d)/2 - 3px);height:6px;border-radius:3px;background:rgba(255,255,255,.14)}
+.route-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:var(--signal);transition:width .26s linear}
+.route-row{position:relative;display:flex;justify-content:space-between}
+.stn{display:flex;flex-direction:column;align-items:center;gap:10px;width:var(--d);padding:0;background:none;border:0;cursor:pointer}
+.stn i{display:block;width:var(--d);height:var(--d);border-radius:50%;border:4px solid var(--cl);background:var(--ink);transition:background .2s,transform .2s}
+.stn b{font-size:12px;font-weight:600;color:#8F95B8}
+.stn.on i{background:var(--cl)}
+.stn:hover i,.stn.sel i{transform:scale(1.28)}
+.stn.sel b{color:#fff}
+.route-ends{display:flex;justify-content:space-between;margin-top:6px;font-size:14px;color:#A9AECB}
+.route-cap{margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.16);display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px 40px;min-height:96px}
+.route-cap strong{display:block;font-family:var(--font-d);font-size:24px;letter-spacing:-.01em;line-height:1.2;margin-bottom:4px}
+.route-cap p{color:#C4C8DE;max-width:56ch}
+.cap-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start}
+.cap-link{display:inline-block;padding:10px 16px;border-radius:4px;background:var(--signal);color:var(--ink);font-weight:700;text-decoration:none;font-size:15px}
+.cap-btn{padding:10px 16px;border-radius:4px;border:2px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-weight:600;font-size:15px;cursor:pointer}
+.cap-btn:hover{border-color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:22px;font-size:14.5px;color:#C4C8DE}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--cl)}
+
+@media (max-width:900px){
+  .hero-top{grid-template-columns:1fr;gap:32px}
+  .hero{padding-top:48px}
+}
+@media (max-width:700px){
+  .route{--d:18px;margin-top:48px}
+  .stn i{border-width:3px}
+  .stn b{display:none}
+  .stn:first-child b,.stn:last-child b{display:block}
+}
+
+/* Home: statement, goals, reasons */
+.statement{font-family:var(--font-d);font-weight:700;font-size:clamp(34px,5.6vw,76px);line-height:1.02;letter-spacing:-.03em;max-width:19ch}
+.statement span{display:block}
+.statement span:first-child{color:var(--muted)}
+.chain{display:flex;flex-wrap:wrap;gap:6px 0;margin-top:36px}
+.chain li{display:flex;align-items:center;font-weight:600;font-size:17px}
+.chain li:not(:last-child)::after{content:"\2192";margin:0 12px;color:var(--muted)}
+
+.goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 56px;border-top:2px solid var(--ink)}
+.goal{position:relative;display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--rule);cursor:pointer}
+.goal input{position:absolute;opacity:0;width:24px;height:24px;margin:0}
+.goal .box{flex:none;width:24px;height:24px;margin-top:2px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:4px;background:#fff;transition:background .15s}
+.goal input:checked + .box{background:var(--learn);border-color:var(--learn)}
+.goal input:checked + .box::after{content:"\2713";color:#fff;font-weight:800;font-size:15px;line-height:1}
+.goal input:focus-visible + .box{outline:3px solid var(--build);outline-offset:3px}
+.goal .gt{line-height:1.4}
+.meter{margin-top:36px;display:grid;grid-template-columns:1fr auto;gap:10px 24px;align-items:center}
+.meter-track{height:12px;border-radius:6px;background:#fff;border:1px solid var(--rule);overflow:hidden}
+.meter-fill{height:100%;width:0;background:var(--learn);transition:width .3s}
+.meter-num{font-family:var(--font-d);font-weight:800;font-size:28px;letter-spacing:-.02em}
+.meter-msg{grid-column:1/-1;color:var(--ink2);font-size:18px}
+
+.rows{border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:1fr 1.1fr auto;gap:12px 40px;align-items:baseline;padding:30px 0;border-bottom:1px solid var(--rule);text-decoration:none;color:inherit}
+.row h3{font-size:clamp(22px,2.6vw,32px)}
+.row p{color:var(--muted)}
+.row .go{font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;white-space:nowrap}
+.row:hover h3{color:var(--build)}
+
+.closer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px}
+.closer h2{margin:0;max-width:18ch}
+
+@media (max-width:900px){
+  .goals-grid{grid-template-columns:1fr}
+  .row{grid-template-columns:1fr}
+}
+
+/* ------------------------------------------------------------
+   Roadmap
+------------------------------------------------------------ */
+.finder{max-width:520px;margin-bottom:44px}
+.finder label{display:block;font-weight:700;margin-bottom:8px}
+.finder input{width:100%;padding:14px 16px;border:2px solid var(--ink);border-radius:4px;background:#fff;font:inherit}
+.finder-out{margin-top:12px}
+.finder-out button{display:block;width:100%;text-align:left;padding:12px 14px;margin-bottom:6px;background:#fff;border:1px solid var(--rule);border-left:5px solid var(--c);border-radius:4px;cursor:pointer}
+.finder-out button:hover{border-color:var(--ink);border-left-color:var(--c)}
+.finder-out strong{display:block}
+.finder-out span{color:var(--muted);font-size:14.5px}
+.finder-empty{color:var(--muted)}
+
+.rm{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:56px;align-items:start;padding-bottom:96px}
+.stations{position:relative}
+.stations .grp{margin:22px 0 4px 44px;font-weight:700;font-size:15px;color:var(--c)}
+.stations .grp:first-child{margin-top:0}
+.stations li.s{position:relative}
+.stations li.s::before{content:"";position:absolute;left:12px;top:0;bottom:0;width:4px;background:var(--c)}
+.stations li.s.first::before{top:50%}
+.stations li.s.last::before{bottom:50%}
+.stations li.s.first.last::before{display:none}
+.st{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:8px 0;background:none;border:0;text-align:left;cursor:pointer}
+.st .dot{flex:none;position:relative;z-index:1;width:28px;height:28px;border-radius:50%;border:4px solid var(--c);background:var(--paper);transition:background .15s,transform .15s}
+.st .st-n{flex:none;width:22px;font-family:var(--font-d);font-weight:700;font-size:13px;color:var(--muted)}
+.st .st-t{font-weight:600;line-height:1.25}
+.st:hover .st-t{text-decoration:underline;text-underline-offset:3px}
+.st[aria-current="true"] .dot{background:var(--c);transform:scale(1.15)}
+.st[aria-current="true"] .st-t{font-weight:800}
+.st.match .dot{box-shadow:0 0 0 5px rgba(255,194,26,.7)}
+.stations.searching .st:not(.match){opacity:.35}
+
+.panel{--c:var(--learn);position:sticky;top:88px;max-height:calc(100vh - 112px);overflow:auto;scroll-margin-top:88px;background:#fff;border:1px solid var(--rule);border-top:6px solid var(--c);border-radius:var(--r);padding:36px 40px}
+.panel .meta{color:var(--c);font-weight:700;font-size:15px}
+.panel h2{font-size:clamp(30px,3.6vw,46px);margin:8px 0 12px;max-width:none}
+.panel .lead{font-size:19px;color:var(--ink2);max-width:52ch;margin-bottom:12px}
+.pg h3{font-family:var(--font-b);font-size:15px;font-weight:700;letter-spacing:0;margin:22px 0 10px}
+.panel .note{margin-top:26px;padding:18px 20px;background:var(--ink);color:#fff;border-radius:4px;font-size:17px}
+.outcome{margin-top:26px;padding:16px 20px;background:var(--paper);border-left:5px solid var(--c)}
+.outcome strong{display:block;font-size:15px;margin-bottom:2px}
+.pnav{display:flex;justify-content:space-between;gap:12px;margin-top:28px}
+.swap{animation:fadeIn .25s ease-out}
+
+@media (max-width:900px){
+  .rm{grid-template-columns:1fr;gap:32px}
+  .panel{position:static;max-height:none;padding:28px 22px}
+}
+
+/* ------------------------------------------------------------
+   DSA
+------------------------------------------------------------ */
+.lanes-scroll{overflow-x:auto;padding-bottom:8px}
+.lanes{min-width:820px}
+.lane-top,.lane-bar{display:grid;grid-template-columns:repeat(8,1fr)}
+.seg{position:relative;padding:20px 10px;background:#fff;border:2px solid var(--ink);margin-left:-2px;font-weight:700;font-size:15px;line-height:1.25;cursor:pointer;text-align:center}
+.seg:first-child{margin-left:0}
+.seg::after{content:"";position:absolute;left:calc(50% - 2px);top:100%;width:4px;height:22px;background:var(--rule)}
+.seg.on{background:var(--ink);color:#fff}
+.seg.on::after{background:var(--signal)}
+.lane-bar{margin-top:22px}
+.cell{display:grid;place-items:center;height:48px;background:var(--ink);color:#fff;font-family:var(--font-d);font-weight:700;font-size:15px;border-left:1px solid rgba(255,255,255,.18);transition:background .2s,color .2s}
+.cell:first-child{border-left:0}
+.cell.on{background:var(--signal);color:var(--ink)}
+.lane-cap{margin-top:18px;font-size:18px;color:var(--ink2);min-height:56px;max-width:64ch}
+
+.topic-row{display:grid;grid-template-columns:200px 1fr;gap:12px 32px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.topic-row h3{font-family:var(--font-b);font-size:16px;font-weight:700;letter-spacing:0;padding-top:6px}
+.topics{border-top:2px solid var(--ink)}
+.topics-meter{margin-bottom:28px}
+
+.ladder{display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:end;margin-top:8px}
+.rung{padding:22px 22px 26px;border:2px solid #fff;margin-left:-2px;display:flex;flex-direction:column;gap:6px}
+.rung:first-child{margin-left:0}
+.rung strong{font-family:var(--font-d);font-size:26px;letter-spacing:-.01em}
+.rung span{color:#C4C8DE}
+.r1{min-height:150px}.r2{min-height:200px;background:rgba(255,255,255,.07)}.r3{min-height:250px;background:var(--signal);color:var(--ink);border-color:var(--signal)}
+.r3 span{color:var(--ink2)}
+.ladder-out{margin-top:28px;font-size:20px;max-width:46ch}
+
+@media (max-width:760px){
+  .topic-row{grid-template-columns:1fr}
+  .ladder{grid-template-columns:1fr}
+  .rung{margin-left:0;margin-top:-2px;min-height:0!important}
+}
+
+/* Step finder (tabs variant) */
+.step-detail{padding:26px 28px;background:#fff;border:1px solid var(--rule);border-left:6px solid var(--build);max-width:62ch;font-size:19px}
+
+/* ------------------------------------------------------------
+   Build
+------------------------------------------------------------ */
+.arch{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:56px;align-items:start}
+.stack{display:flex;flex-direction:column;align-items:stretch}
+.layer{width:100%;text-align:left;padding:16px 20px;border:2px solid var(--ink);background:#fff;font-family:var(--font-m);font-size:15px;cursor:pointer;transition:background .2s,color .2s}
+.layer.on{background:var(--ink);color:#fff}
+.layer.pulse{background:var(--signal);color:var(--ink);border-color:var(--ink)}
+.conn{width:2px;height:26px;margin:0 auto;background:var(--ink)}
+.arch-detail{background:#fff;border:1px solid var(--rule);border-top:6px solid var(--build);border-radius:var(--r);padding:32px 34px}
+.arch-detail h3{font-size:30px;margin-bottom:8px}
+.arch-detail p{color:var(--ink2);margin-bottom:16px;max-width:50ch}
+.trace{margin-top:24px;padding:20px 22px;background:var(--ink);color:#fff;border-radius:4px}
+.trace p{color:#fff;min-height:54px;margin:0 0 14px;font-size:17px}
+.trace .btn{padding:10px 18px}
+
+.ideas{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--ink);border-left:1px solid var(--rule);margin-bottom:24px}
+.idea{padding:26px 20px;min-height:104px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);font-family:var(--font-d);font-weight:700;font-size:21px;line-height:1.15;letter-spacing:-.01em;transition:background .2s}
+.idea.pick{background:var(--signal)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.twocol .ticklist{border-top:2px solid var(--ink)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);margin:8px 0 36px}
+.flow div{padding:20px 18px;border:2px solid var(--ink);margin-left:-2px;font-family:var(--font-d);font-weight:700;font-size:22px;background:#fff}
+.flow div:first-child{margin-left:0}
+.flow div:last-child{background:var(--ink);color:#fff}
+.sub-h{font-family:var(--font-b);font-size:16px;font-weight:700;letter-spacing:0;margin:26px 0 12px}
+.stackdl{border-top:2px solid var(--ink)}
+.stackdl div{display:grid;grid-template-columns:200px 1fr;gap:8px 24px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.stackdl dt{font-weight:700}
+.stackdl dd{display:flex;flex-wrap:wrap;gap:6px}
+.stackdl .chip{margin:0}
+.aiblock{background:var(--ink);color:#fff;border-radius:var(--r);padding:44px clamp(24px,5vw,56px)}
+.aiblock p:first-child{font-family:var(--font-d);font-weight:700;font-size:clamp(26px,3.6vw,44px);line-height:1.08;letter-spacing:-.02em;max-width:24ch;margin-bottom:18px}
+.aiblock p:last-child{font-size:19px;color:#C4C8DE;max-width:52ch}
+
+@media (max-width:900px){
+  .arch{grid-template-columns:1fr;gap:32px}
+  .ideas{grid-template-columns:repeat(2,1fr)}
+  .twocol{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr 1fr}
+  .flow div{margin-left:0;margin-top:-2px}
+  .stackdl div{grid-template-columns:1fr}
+}
+
+/* ------------------------------------------------------------
+   Weekly plan
+------------------------------------------------------------ */
+.loop{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:center;margin-bottom:56px}
+.loop div.l{padding:20px 22px;border-radius:4px;font-family:var(--font-d);font-weight:700;font-size:22px;line-height:1.15}
+.loop .a{background:var(--learn);color:#fff}
+.loop .b{background:var(--prove);color:var(--ink)}
+.loop .c{background:var(--build);color:#fff}
+.loop small{display:block;font-family:var(--font-b);font-weight:500;font-size:15px;opacity:.9;margin-top:4px}
+.loop .arrow{font-size:26px;color:var(--muted)}
+.days{display:grid;grid-template-columns:1.25fr 1.25fr repeat(5,1fr);gap:8px}
+.day{display:flex;flex-direction:column;gap:2px;padding:20px 14px;border:3px solid transparent;border-radius:4px;text-align:left;cursor:pointer;color:#fff;transition:transform .15s}
+.day strong{font-family:var(--font-d);font-size:24px;letter-spacing:-.01em}
+.day span{font-size:15px;opacity:.92}
+.day.learn{background:var(--learn)}.day.build{background:var(--build)}
+.day.practice{background:var(--prove);color:var(--ink)}
+.day[aria-pressed="true"]{border-color:var(--ink);transform:translateY(-4px)}
+.day-detail{margin-top:20px;padding:30px 34px;background:#fff;border:1px solid var(--rule);border-radius:var(--r)}
+.day-detail h3{font-size:30px;margin-bottom:6px}
+.day-detail > p{color:var(--muted);margin-bottom:18px;max-width:52ch}
+.dice{margin-top:22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.dice output{font-weight:700;font-size:18px}
+@media (max-width:900px){
+  .loop{grid-template-columns:1fr}
+  .loop .arrow{transform:rotate(90deg);justify-self:center}
+}
+@media (max-width:620px){
+  .days{gap:5px}
+  .day{padding:14px 6px;align-items:center;text-align:center}
+  .day strong{font-size:17px}
+  .day span{font-size:12px}
+  .day-detail{padding:24px 20px}
+}
+
+/* ------------------------------------------------------------
+   Placement
+------------------------------------------------------------ */
+.qbox{background:var(--ink);color:#fff;border-radius:var(--r);padding:40px clamp(24px,5vw,56px)}
+.qbox .qn{color:#A9AECB;font-size:15px;margin-bottom:14px}
+.qbox .qt{font-family:var(--font-d);font-weight:700;font-size:clamp(28px,4.4vw,54px);line-height:1.06;letter-spacing:-.02em;min-height:2.2em;max-width:22ch}
+.qbox .qa{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.qhint{margin-top:18px;color:#C4C8DE;max-width:56ch}
+.mock-level h3{font-size:30px;margin-bottom:6px}
+.mock-level > p{color:var(--muted);margin-bottom:18px}
+.resume-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.resume-cols h3{font-size:30px;margin-bottom:14px}
+.resume-cols .ticklist{border-top:2px solid var(--ink)}
+.resume-cols .ticklist li::before{background:var(--present)}
+@media (max-width:820px){.resume-cols{grid-template-columns:1fr}.resume-cols > div + div{margin-top:40px}}
+
+/* ------------------------------------------------------------
+   Outcomes
+------------------------------------------------------------ */
+.out-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0 36px}
+.out-list li{padding:14px 0}
+.journey{display:flex;flex-wrap:wrap;gap:10px 0;counter-reset:j}
+.journey li{display:flex;align-items:center;counter-increment:j}
+.journey li span{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#fff;border:1px solid var(--rule);font-weight:600;font-size:15px}
+.journey li span::before{content:counter(j);display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;font-weight:700}
+.journey li:last-child span{background:var(--signal);border-color:var(--signal)}
+.journey li:not(:last-child)::after{content:"";width:18px;height:3px;background:var(--ink)}
+.join{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.join h2{color:#fff;max-width:14ch}
+.join dl div{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.16)}
+.join dt{color:#A9AECB}
+.join dd{font-weight:600}
+.join .msg{color:#C4C8DE;font-size:19px;margin:12px 0 26px;max-width:40ch}
+@media (max-width:900px){.out-list{grid-template-columns:1fr 1fr}.join{grid-template-columns:1fr}}
+@media (max-width:560px){.out-list{grid-template-columns:1fr}}
+
+/* ------------------------------------------------------------
+   Packages and fee calculator
+------------------------------------------------------------ */
+.chips-bar{display:flex;flex-wrap:wrap;gap:4px 8px;margin-bottom:24px}
+.pkg-list{border-top:2px solid var(--ink)}
+.pkg{display:grid;grid-template-columns:minmax(150px,260px) 1fr minmax(100px,150px);gap:8px 20px;align-items:center;width:100%;padding:14px 10px;background:none;border:0;border-bottom:1px solid var(--rule);text-align:left;cursor:pointer}
+.pkg:hover{background:rgba(255,255,255,.65)}
+.pkg[aria-pressed="true"]{background:#fff;box-shadow:inset 5px 0 0 var(--ink)}
+.pkg-name strong{display:block;line-height:1.2}
+.pkg-name span{font-size:14.5px;color:var(--muted)}
+.pkg-bar{height:14px;border-radius:7px;background:rgba(21,24,43,.08);overflow:hidden}
+.pkg-bar i{display:block;height:100%;border-radius:7px;background:var(--bc);transition:width .35s}
+.pkg-val{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+.pkg-detail{margin-top:24px;padding:24px 28px;background:#fff;border:1px solid var(--rule);border-left:6px solid var(--bc);max-width:72ch}
+.pkg-detail h3{font-size:28px;margin-bottom:4px}
+.pkg-detail p{margin-bottom:12px}
+.pkg-detail .meta{color:var(--muted)}
+.fine{margin-top:28px;font-size:14.5px;color:var(--muted);max-width:70ch}
+
+.calc{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:56px;align-items:start}
+.ctl{margin-bottom:28px}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-weight:700;margin-bottom:8px}
+.ctl output{font-family:var(--font-d);font-size:22px;letter-spacing:-.01em}
+.ctl input[type="range"]{width:100%;accent-color:var(--build)}
+.ctl input[type="number"]{width:100%;padding:12px 14px;border:2px solid var(--ink);border-radius:4px;background:#fff;font:inherit}
+.ctl .help{font-size:14.5px;color:var(--muted);margin-top:6px}
+.presets{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:12px}
+.total{padding:20px 22px;background:var(--ink);color:#fff;border-radius:4px}
+.total strong{display:block;font-family:var(--font-d);font-size:36px;letter-spacing:-.02em;line-height:1.1}
+.total span{color:#C4C8DE}
+.res{background:#fff;border:1px solid var(--rule);border-top:6px solid var(--bc);border-radius:var(--r);padding:30px 34px;margin-bottom:32px}
+.res h3{font-size:30px;margin-bottom:4px}
+.res .sub{color:var(--muted);margin-bottom:14px}
+.res dl{display:grid;grid-template-columns:1fr 1fr;gap:0 32px}
+.res dl div{padding:12px 0;border-bottom:1px solid var(--rule)}
+.res dt{color:var(--muted);font-size:15px}
+.res dd{font-family:var(--font-d);font-weight:700;font-size:26px;letter-spacing:-.01em}
+.res .cmp{margin-top:18px;font-size:18px;color:var(--ink2)}
+.res .warn{margin-top:10px;font-size:15px;color:var(--muted)}
+.band-list li{display:grid;grid-template-columns:240px 1fr;gap:8px 32px;padding:18px 0;border-bottom:1px solid var(--rule)}
+.band-list{border-top:2px solid var(--ink);margin-bottom:36px}
+.band-list strong{font-family:var(--font-d);font-size:22px;letter-spacing:-.01em}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+@media (max-width:900px){
+  .calc{grid-template-columns:1fr;gap:32px}
+}
+@media (max-width:640px){
+  .pkg{grid-template-columns:1fr auto}
+  .pkg-bar{grid-column:1/-1;order:3}
+  .res{padding:24px 20px}
+  .res dl{grid-template-columns:1fr}
+  .band-list li{grid-template-columns:1fr}
+}
+
+/* ------------------------------------------------------------
+   Footer
+------------------------------------------------------------ */
+.foot{background:var(--ink);color:#C4C8DE;padding:48px 0 56px;border-top:1px solid rgba(255,255,255,.08)}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:28px 64px;justify-content:space-between}
+.foot strong{display:block;color:#fff;font-family:var(--font-d);font-size:22px;letter-spacing:-.01em;margin-bottom:6px}
+.foot ul{display:flex;flex-wrap:wrap;gap:6px 22px}
+.foot a{color:#C4C8DE;text-decoration:none}
+.foot a:hover{color:#fff;text-decoration:underline}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main" id="skip">Skip to content</a>
+
+<header class="top dark" id="top">
+  <div class="wrap">
+    <a class="brand" href="#/home" aria-label="From College to Software Engineer, home">
+      <svg viewBox="0 0 38 16" aria-hidden="true"><line x1="6" y1="8" x2="32" y2="8" stroke="#FFC21A" stroke-width="3"/><circle cx="6" cy="8" r="5" fill="#15182B" stroke="#35C9BB" stroke-width="3"/><circle cx="32" cy="8" r="5" fill="#FFC21A"/></svg>
+      College to Software Engineer
+    </a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mainNav">Menu</button>
+    <nav id="mainNav" aria-label="Main"><ul id="navList"></ul></nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ======================= HOME ======================= -->
+<section class="page" id="page-home" hidden>
+  <div class="hero dark">
+    <div class="wrap">
+      <div class="hero-top">
+        <h1>
+          <span>From College</span>
+          <span>to Software</span>
+          <span>Engineer</span>
+        </h1>
+        <div>
+          <p class="hero-sub">A practical, placement-focused software development program. Learn, build, deploy, prepare and get placed.</p>
+          <p class="hero-small">Taught on Saturdays and Sundays. Python, React, Flask and MySQL, with DSA and mock interviews running all the way through.</p>
+          <div class="hero-cta">
+            <a class="btn btn-signal" href="#/roadmap">See the roadmap</a>
+            <a class="btn btn-ghost" href="#/weekly">How a week works</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="route" id="route">
+        <div class="route-rail"><div class="route-fill" id="routeFill"></div></div>
+        <div class="route-row" id="routeRow"></div>
+        <div class="route-ends"><span>Computer and developer tools</span><span>Placement</span></div>
+        <div class="route-cap">
+          <div>
+            <strong id="capTitle"></strong>
+            <p id="capText"></p>
+          </div>
+          <div class="cap-actions">
+            <a class="cap-link" id="capLink" href="#/roadmap">Open the roadmap</a>
+            <button class="cap-btn" id="replay" type="button">Replay the journey</button>
+          </div>
+        </div>
+        <ul class="legend" id="legend"></ul>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec">
+    <div class="wrap">
+      <p class="statement"><span>Don't just learn to code.</span><span>Learn to think, build, deploy and explain software.</span></p>
+      <ol class="chain" aria-label="The program in seven verbs">
+        <li>Learn</li><li>Practice</li><li>Build</li><li>Deploy</li><li>Present</li><li>Interview</li><li>Get placed</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec alt" id="goals">
+    <div class="wrap">
+      <h2>What can you already do?</h2>
+      <p class="intro">By the end of the program, every student should be able to do all fifteen of these. Tick the ones you can do today.</p>
+      <div class="goals-grid" id="goalsGrid"></div>
+      <div class="meter" aria-live="polite">
+        <div class="meter-track"><div class="meter-fill" id="goalFill"></div></div>
+        <div class="meter-num" id="goalNum">0 / 15</div>
+        <p class="meter-msg" id="goalMsg"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>What makes this program different</h2>
+      <p class="intro">Technologies are the easy part. The program is built around how students actually become placement-ready.</p>
+      <div class="rows" id="reasons"></div>
+    </div>
+  </section>
+
+  <section class="sec inkbg dark">
+    <div class="wrap closer">
+      <h2>See what you will have at the end.</h2>
+      <a class="btn btn-signal" href="#/outcomes">View the outcomes</a>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= ROADMAP ======================= -->
+<section class="page" id="page-roadmap" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>The roadmap</h1>
+      <p>Fifteen stations from computer basics to placement. Pick one to see exactly what is covered, or search for a topic.</p>
+    </div>
+
+    <div class="finder">
+      <label for="finderInput">Search the syllabus</label>
+      <input id="finderInput" type="search" placeholder="Try Docker, joins, hooks or resume" autocomplete="off">
+      <div class="finder-out" id="finderOut"></div>
+    </div>
+
+    <div class="rm">
+      <ol class="stations" id="stations" aria-label="Program stations"></ol>
+      <article class="panel" id="panel" aria-live="polite"></article>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= DSA ======================= -->
+<section class="page" id="page-dsa" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>DSA runs the whole way.</h1>
+      <p>DSA is the core of technical interviews. It is not a subject that is taught once and forgotten. It is practised throughout the program.</p>
+    </div>
+  </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>One track runs underneath all the others</h2>
+      <p class="intro">Choose a stage to see how DSA continues alongside it.</p>
+      <div class="lanes-scroll"><div class="lanes" id="lanes"></div></div>
+      <p class="lane-cap" id="laneCap" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>Learn to approach a problem, not memorise one</h2>
+      <p class="intro">Before any topic, students learn how to think through a problem. Step through the method.</p>
+      <div id="methodTabs"></div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>The topics</h2>
+      <p class="intro">Twenty-one topics, from arrays to dynamic programming. Tick each one as you cover it.</p>
+      <div class="meter topics-meter" aria-live="polite">
+        <div class="meter-track"><div class="meter-fill" id="dsaFill"></div></div>
+        <div class="meter-num" id="dsaNum">0 / 21</div>
+      </div>
+      <div class="topics" id="topics"></div>
+    </div>
+  </section>
+
+  <section class="sec inkbg dark">
+    <div class="wrap">
+      <h2>Easy, then medium, then interview-level</h2>
+      <p class="intro">Students solve problems progressively, so each level builds on the last.</p>
+      <div class="ladder">
+        <div class="rung r1"><strong>Easy</strong><span>Learn each topic by solving small problems.</span></div>
+        <div class="rung r2"><strong>Medium</strong><span>Recognise patterns across topics.</span></div>
+        <div class="rung r3"><strong>Interview-level</strong><span>Approach unfamiliar problems instead of memorising solutions.</span></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= BUILD ======================= -->
+<section class="page" id="page-build" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Build things that run on the internet.</h1>
+      <p>Stop building only tutorial projects. Every project combines frontend, backend, database, APIs, authentication and deployment.</p>
+    </div>
+  </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>How the pieces fit together</h2>
+      <p class="intro">This is the architecture of the capstone project. Choose a layer to see what you learn there, or trace what happens when a user logs in.</p>
+      <div class="arch">
+        <div class="stack" id="stack"></div>
+        <div class="arch-detail" id="archDetail"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>Projects you could build</h2>
+      <p class="intro">Eight categories of real-world applications. Students finish with projects they can demonstrate in interviews.</p>
+      <div class="ideas" id="ideas"></div>
+      <button class="btn btn-line" id="pickIdea" type="button">Pick one for me</button>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap twocol">
+      <div>
+        <h2>What every project teaches</h2>
+        <p class="intro">Building a project is a full workflow, not just writing code.</p>
+        <ul class="ticklist" id="craft"></ul>
+      </div>
+      <div>
+        <h2>The capstone stack</h2>
+        <p class="intro">One production-style project, built, integrated, tested and deployed.</p>
+        <dl class="stackdl" id="stackdl"></dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>From localhost to the internet</h2>
+      <p class="intro">Deployment turns a project on your laptop into something anyone can open.</p>
+      <div class="flow" aria-label="Development, Build, Deploy, Access"><div>Development</div><div>Build</div><div>Deploy</div><div>Access</div></div>
+      <h3 class="sub-h">Platforms</h3>
+      <div id="platforms"></div>
+      <p class="intro" style="margin:12px 0 0">Four platforms are introduced. Students go deep on one deployment path, so they become genuinely competent with it.</p>
+      <h3 class="sub-h">Concepts</h3>
+      <div id="deployConcepts"></div>
+      <h3 class="sub-h">Introduction to</h3>
+      <div id="deployIntro"></div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <div class="aiblock dark">
+        <p>AI should increase your productivity, not replace your understanding.</p>
+        <p>Students use AI to learn, debug, generate and refactor code, and should be able to explain every important piece of code they submit.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= WEEKLY ======================= -->
+<section class="page" id="page-weekly" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>How a week works.</h1>
+      <p>The program runs mainly on Saturdays and Sundays. Weekdays are for practice, so the next weekend starts with review.</p>
+    </div>
+
+    <div class="loop" aria-label="The weekly rhythm">
+      <div class="l a">Weekend<small>Learn</small></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="l b">Weekday<small>Practice</small></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="l c">Weekend<small>Review and build</small></div>
+    </div>
+  </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>Pick a day</h2>
+      <p class="intro">Select a day to see what happens in it.</p>
+      <div class="days" id="days"></div>
+      <div class="day-detail fade-in" id="dayDetail" aria-live="polite"></div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= PLACEMENT ======================= -->
+<section class="page" id="page-placement" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>Be ready for the interview.</h1>
+      <p>Placement preparation runs through the whole program: aptitude, technical interviews, mock interviews, group discussions, a resume and a portfolio.</p>
+    </div>
+  </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>Can you explain your own project?</h2>
+      <p class="intro">Interviewers will ask about what you built. Practise answering these out loud.</p>
+      <div class="qbox dark">
+        <p class="qn" id="qNum"></p>
+        <p class="qt" id="qText" aria-live="polite"></p>
+        <div class="qa">
+          <button class="btn btn-ghost" id="qPrev" type="button">Previous</button>
+          <button class="btn btn-signal" id="qNext" type="button">Next question</button>
+          <button class="btn btn-ghost" id="qShuffle" type="button">Shuffle</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>Four levels of mock interviews</h2>
+      <p class="intro">Interview preparation happens throughout the program, not only at the end.</p>
+      <div id="mockTabs"></div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>Aptitude and technical subjects</h2>
+      <p class="intro">Companies test more than coding. Students practise both sides.</p>
+      <h3 class="sub-h">Aptitude</h3>
+      <div id="aptitude"></div>
+      <h3 class="sub-h">Technical interview subjects</h3>
+      <div id="techSubjects"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <h2>Present yourself professionally</h2>
+      <p class="intro">A strong resume and LinkedIn profile get you into the interview room. A deployed portfolio shows what you can do.</p>
+      <div class="resume-cols">
+        <div><h3>Resume</h3><ul class="ticklist" id="resumeList"></ul></div>
+        <div><h3>LinkedIn</h3><ul class="ticklist" id="linkedinList"></ul></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= PACKAGES ======================= -->
+<section class="page" id="page-packages" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>What the packages look like.</h1>
+      <p>Fresher offers run from about &#8377;3 lakh to well over &#8377;30 lakh a year. Which band you land in depends on how well you prepare.</p>
+    </div>
+  </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>Offers by company</h2>
+      <p class="intro">Approximate 2026 CTC for freshers, in lakhs per annum (LPA). Choose a track to see how students reach it.</p>
+      <div class="chips-bar" id="pkgFilters" role="group" aria-label="Filter by band"></div>
+      <div class="pkg-list" id="pkgList"></div>
+      <div class="pkg-detail fade-in" id="pkgDetail" aria-live="polite"></div>
+      <p class="fine">Figures are approximate and come from public sources and candidate reports. Companies change them every hiring year, and many do not publish fresher pay. CTC is the total package, not take-home. Where a package includes stock, it vests over several years, so the first year pays less in cash.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="calc">
+    <div class="wrap">
+      <h2>How fast can you recover your fees?</h2>
+      <p class="intro">Enter what your degree costs. The calculator shows how long it takes to earn that back at each package.</p>
+      <div class="calc">
+        <div>
+          <div class="ctl">
+            <div class="lab"><label for="cYear">Cost per year</label><output id="oYear"></output></div>
+            <input id="cYear" type="range" min="1" max="5" step="0.25" value="3">
+            <div class="presets">
+              <button class="chip" type="button" id="pFees">College fees only: 1.5 L</button>
+              <button class="chip" type="button" id="pHostel">Fees and hostel: 3 L</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cYears">Years of study</label><output id="oYears"></output></div>
+            <input id="cYears" type="range" min="2" max="6" step="1" value="4">
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cTake">Take-home share of package</label><output id="oTake"></output></div>
+            <input id="cTake" type="range" min="60" max="90" step="1" value="75">
+            <p class="help">IT-services roles typically take home about 70 to 80 percent of CTC.</p>
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cExp">Monthly expenses after joining (&#8377;)</label></div>
+            <input id="cExp" type="number" min="0" step="1000" value="0">
+            <p class="help">Optional. Leave at 0 to ignore living costs.</p>
+          </div>
+          <div class="total"><span>Total spent on the degree</span><strong id="oTotal"></strong></div>
+        </div>
+        <div>
+          <div class="res" id="calcRes" aria-live="polite"></div>
+          <h3 class="sub-h">Time to recover, by package</h3>
+          <div class="pkg-list" id="recList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>The band you land in is decided by preparation</h2>
+      <p class="intro">The gap between the lowest and highest bands at the same company comes down to test scores and coding ability.</p>
+      <ul class="band-list">
+        <li><strong>TCS</strong><span>One test, the NQT. Your score decides whether you get Ninja, Digital or Prime.</span></li>
+        <li><strong>Wipro</strong><span>Turbo uses the same exam as Elite, with a higher cutoff and an advanced coding round.</span></li>
+        <li><strong>Infosys</strong><span>Specialist Programmer and Digital Specialist Engineer roles have tougher coding rounds than System Engineer.</span></li>
+        <li><strong>Zoho</strong><span>Aptitude and coding rounds first, then technical and HR interviews.</span></li>
+      </ul>
+      <p class="intro">Aptitude, DSA, projects and mock interviews are exactly what this program trains, from the first weekend.</p>
+      <div class="cta-row">
+        <a class="btn btn-ink" href="#/roadmap">See the roadmap</a>
+        <a class="btn btn-line" href="#/placement">See placement prep</a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= OUTCOMES ======================= -->
+<section class="page" id="page-outcomes" hidden>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>What you will have at the end.</h1>
+      <p>Skills, career assets and interview practice. Everything a fresher needs to walk into a placement process prepared.</p>
+    </div>
+    <div id="outTabs"></div>
+  </div>
+
+  <section class="sec alt" style="margin-top:72px">
+    <div class="wrap">
+      <h2>The whole journey</h2>
+      <p class="intro">Sixteen steps, in order, from your first terminal command to placement.</p>
+      <ol class="journey" id="journey"></ol>
+    </div>
+  </section>
+
+  <section class="sec inkbg dark">
+    <div class="wrap join">
+      <div>
+        <h2>Learn to think, build, deploy and explain software.</h2>
+      </div>
+      <div id="join"></div>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<footer class="foot dark">
+  <div class="wrap">
+    <div>
+      <strong>From College to Software Engineer</strong>
+      <p>Learn. Practice. Build. Deploy. Present. Interview. Get placed.</p>
+    </div>
+    <nav aria-label="Footer"><ul id="footNav"></ul></nav>
+  </div>
+</footer>
+
+<script>
+(() => {
+'use strict';
+
+/* ============================================================
+   CONFIG: edit these values before sharing the page.
+   Leave a value as "" and it will not be shown.
+============================================================ */
+const CONFIG = {
+  programName: "From College to Software Engineer",
+  schedule: "Saturday and Sunday",
+  startDate: "",       // e.g. "4 November"
+  duration: "",        // e.g. "6 months"
+  contact: "",         // e.g. "name@email.com or +91 98765 43210"
+  registerUrl: ""      // e.g. a Google Form or WhatsApp link
+};
+
+/* ============================================================
+   Helpers
+============================================================ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const pad = n => String(n).padStart(2, '0');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function el(tag, props = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k === 'style') e.style.cssText = v;
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (v === true) e.setAttribute(k, '');
+    else e.setAttribute(k, v);
+  }
+  kids.flat(Infinity).forEach(c => {
+    if (c == null || c === false) return;
+    e.append(c.nodeType ? c : document.createTextNode(String(c)));
+  });
+  return e;
+}
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('c2se.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('c2se.' + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+function chips(items) { return items.map(t => el('span', { class: 'chip', text: t })); }
+
+function makeTabs(host, items, render, label) {
+  host.innerHTML = '';
+  const bar = el('div', { class: 'tabs', role: 'tablist', 'aria-label': label || 'Options' });
+  const panel = el('div', { class: 'tabpanel', role: 'tabpanel' });
+  const btns = items.map((it, i) => el('button', {
+    class: 'tab', type: 'button', role: 'tab', id: `${host.id}-t${i}`,
+    'aria-selected': 'false', tabindex: '-1',
+    onclick: () => select(i),
+    onkeydown: e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + items.length) % items.length;
+        select(n); btns[n].focus(); e.preventDefault();
+      }
+    }
+  }, it.label));
+  function select(i) {
+    btns.forEach((b, j) => { b.setAttribute('aria-selected', j === i ? 'true' : 'false'); b.tabIndex = j === i ? 0 : -1; });
+    panel.setAttribute('aria-labelledby', btns[i].id);
+    panel.innerHTML = '';
+    const content = render(items[i], i);
+    content.classList.add('fade-in');
+    panel.append(content);
+  }
+  btns.forEach(b => bar.append(b));
+  host.append(bar, panel);
+  select(0);
+}
+
+/* ============================================================
+   Data
+============================================================ */
+const GROUPS = {
+  learn:   { name: 'Learn',    c: 'var(--learn)',   cl: 'var(--learn-l)' },
+  build:   { name: 'Build',    c: 'var(--build)',   cl: 'var(--build-l)' },
+  present: { name: 'Present',  c: 'var(--present)', cl: 'var(--present-l)' },
+  prove:   { name: 'Prove it', c: 'var(--prove)',   cl: 'var(--prove-l)' }
+};
+
+const MODULES = [
+  { n: 1, g: 'learn', title: 'Developer Foundations',
+    lead: 'Understand the tools used by professional developers.',
+    sections: [
+      { h: 'Tools', items: ['Computer & Internet fundamentals', 'Files, folders and command line', 'VS Code', 'Terminal / Command Prompt'] },
+      { h: 'Git and GitHub', items: ['Git fundamentals', 'GitHub', 'Creating repositories', 'Commits, branches and pull requests', 'README files'] },
+      { h: 'Professional presence', items: ['LinkedIn', 'Professional developer profile', 'How software teams work'] }
+    ],
+    outcome: 'Students become comfortable working in a developer environment.' },
+
+  { n: 2, g: 'learn', title: 'Programming With Python',
+    lead: 'Build the foundation of programming and logical thinking.',
+    sections: [
+      { h: 'Python fundamentals', items: ['Installation & environment', 'Variables', 'Data types', 'Input / Output', 'Operators', 'Conditional statements (if, elif, else)', 'Loops (for, while)', 'Functions', 'Parameters & return values', 'Scope', 'Lists', 'Tuples', 'Dictionaries', 'Sets', 'Strings', 'List & dictionary operations', 'Basic error handling', 'Modules & packages'] },
+      { h: 'Problem solving', items: ['How to approach a programming problem', 'Breaking a problem into smaller parts', 'Pattern recognition', 'Writing algorithms', 'Pseudocode', 'Time complexity (introduction)', 'Space complexity (introduction)'] }
+    ],
+    outcome: 'Students stop thinking only in terms of syntax and start learning how to solve problems.' },
+
+  { n: 3, g: 'learn', title: 'Data Structures & Algorithms',
+    lead: 'The core of technical interviews. Practised throughout the program, not taught once and forgotten.',
+    sections: [
+      { h: 'Foundations', items: ['Arrays', 'Strings', 'Two pointers', 'Sliding window', 'Hashing'] },
+      { h: 'Linear structures', items: ['Stack', 'Queue', 'Linked List'] },
+      { h: 'Searching and sorting', items: ['Binary Search', 'Sorting'] },
+      { h: 'Recursion', items: ['Recursion', 'Backtracking'] },
+      { h: 'Trees and heaps', items: ['Trees', 'Binary Search Trees', 'Heaps / Priority Queue'] },
+      { h: 'Graphs', items: ['Graphs', 'BFS', 'DFS'] },
+      { h: 'Optimisation', items: ['Greedy algorithms', 'Dynamic Programming'] },
+      { h: 'Analysis', items: ['Basic Big-O analysis'] },
+      { h: 'Practice', items: ['Easy', 'Medium', 'Interview-level problems'] }
+    ],
+    outcome: 'Students develop the ability to approach unfamiliar coding problems instead of memorizing solutions.' },
+
+  { n: 4, g: 'learn', title: 'Web Development Fundamentals',
+    lead: 'Understand how websites and web applications actually work, before jumping into frameworks.',
+    sections: [
+      { h: 'HTML', items: ['HTML structure', 'Semantic HTML', 'Forms', 'Tables', 'Links', 'Images', 'Multimedia', 'Accessibility basics'] },
+      { h: 'CSS', items: ['Selectors', 'Box model', 'Positioning', 'Flexbox', 'Grid', 'Responsive design', 'Media queries', 'Basic animations'] },
+      { h: 'JavaScript', items: ['Variables', 'Data types', 'Functions', 'Arrays', 'Objects', 'DOM', 'Events', 'ES6+', 'Destructuring', 'Spread / rest', 'Array methods', 'Promises', 'Async / Await', 'Fetch API', 'JSON', 'Error handling'] }
+    ] },
+
+  { n: 5, g: 'build', title: 'Frontend Development With React',
+    lead: 'Build modern frontend applications.',
+    sections: [
+      { h: 'Core React', items: ['React fundamentals', 'Components', 'Props', 'State', 'Events', 'Conditional rendering', 'Lists', 'Forms', 'Component communication'] },
+      { h: 'Hooks', items: ['useState', 'useEffect', 'useContext', 'Custom hooks'] },
+      { h: 'Building an app', items: ['React Router', 'API integration', 'Loading & error states', 'Authentication concepts', 'Local storage', 'Basic application architecture', 'Reusable components'] },
+      { h: 'Deployment', items: ['Vercel', 'Netlify'] }
+    ],
+    outcome: 'Students can build and publish a functional frontend application.' },
+
+  { n: 6, g: 'build', title: 'Backend Development',
+    lead: 'Python and Flask. Understand what happens behind the frontend.',
+    sections: [
+      { h: 'Backend fundamentals', items: ['What is a backend?', 'Client vs server', 'Request / response', 'HTTP', 'HTTP methods (GET, POST, PUT, PATCH, DELETE)', 'HTTP status codes', 'Headers', 'JSON', 'REST APIs', 'API architecture'] },
+      { h: 'Flask', items: ['Flask fundamentals', 'Routes', 'Request handling', 'Response handling', 'Query parameters', 'Path parameters', 'Request body', 'JSON APIs', 'Error handling', 'Application structure', 'Environment variables', 'CORS', 'Basic authentication concepts'] },
+      { h: 'API testing', items: ['Postman', 'Collections', 'Environment variables', 'Testing API requests', 'Debugging API issues'] }
+    ],
+    note: 'Students build APIs and connect them with their React applications.',
+    outcome: 'Students understand how frontend and backend communicate.' },
+
+  { n: 7, g: 'build', title: 'Database & SQL',
+    lead: 'MySQL. Learn how applications store and retrieve data.',
+    sections: [
+      { h: 'Database fundamentals', items: ['What is a database?', 'Relational databases', 'Tables', 'Rows & columns', 'Primary keys', 'Foreign keys', 'Relationships'] },
+      { h: 'SQL commands', items: ['DDL: CREATE, ALTER, DROP, TRUNCATE', 'DML: INSERT, UPDATE, DELETE', 'DQL: SELECT, WHERE, ORDER BY, GROUP BY, HAVING'] },
+      { h: 'Important concepts', items: ['Joins', 'Aggregate functions', 'Subqueries', 'Constraints', 'Indexes (introduction)', 'Normalization (basics)', 'Transactions', 'ACID properties', 'Commit', 'Rollback'] },
+      { h: 'Backend integration', items: ['Connecting Flask with MySQL', 'CRUD operations', 'Database queries from backend', 'Handling database errors'] }
+    ],
+    outcome: 'Students can build applications that persist real data.' },
+
+  { n: 8, g: 'build', title: 'Build Real-World Projects',
+    lead: 'Stop building only tutorial projects.',
+    sections: [
+      { h: 'What every project combines', items: ['Frontend', 'Backend', 'Database', 'APIs', 'Authentication', 'Deployment'] },
+      { h: 'Project categories', items: ['E-commerce application', 'Job portal', 'Expense management system', 'Event booking system', 'Learning management system', 'Food ordering system', 'College management system', 'Service booking platform'] },
+      { h: 'Project development', items: ['Requirement analysis', 'Feature planning', 'Database design', 'API design', 'Frontend architecture', 'Backend architecture', 'Git/GitHub workflow', 'Debugging', 'Testing', 'Integration', 'Deployment'] }
+    ],
+    outcome: 'Students finish with projects they can actually demonstrate in interviews.' },
+
+  { n: 9, g: 'build', title: 'AI for Developers',
+    lead: 'Learn how to use AI as a developer, not just as a chatbot.',
+    sections: [
+      { h: 'Foundations', items: ['What is Generative AI?', 'LLM fundamentals', 'Prompting fundamentals'] },
+      { h: 'AI in your workflow', items: ['Using AI for learning', 'Using AI for debugging', 'Code generation', 'Code explanation', 'Refactoring', 'Documentation', 'Test generation', 'AI-assisted development'] },
+      { h: 'AI in your applications', items: ['API integration with AI', 'Using AI inside applications', 'Function / tool calling (introduction)'] },
+      { h: 'The habit that matters', items: ['Understanding AI-generated code instead of blindly copying it'] }
+    ],
+    note: 'AI should increase your productivity, not replace your understanding. Students should be able to explain every important piece of code they submit.' },
+
+  { n: 10, g: 'build', title: 'Deployment & Cloud Fundamentals',
+    lead: 'Take applications from localhost to the internet: Development, Build, Deploy, Access.',
+    sections: [
+      { h: 'Deployment platforms', items: ['Vercel', 'Netlify', 'Supabase', 'Firebase'] },
+      { h: 'Deployment concepts', items: ['Environment variables', 'Production vs development', 'Build process', 'Domain basics', 'HTTPS basics', 'Frontend deployment', 'Backend deployment', 'Database hosting', 'CORS in production', 'Basic logging', 'Basic monitoring'] },
+      { h: 'Introduction to', items: ['Cloud computing', 'Servers', 'DNS', 'CDN', 'Containers', 'Docker', 'CI/CD'] }
+    ],
+    outcome: 'Students can deploy and share their applications with anyone.' },
+
+  { n: 11, g: 'present', title: 'Portfolio Development',
+    lead: 'Build your professional identity with your own portfolio website.',
+    sections: [
+      { h: 'Portfolio sections', items: ['About Me', 'Skills', 'Projects', 'Experience', 'Education', 'GitHub', 'LinkedIn', 'Contact', 'Resume'] },
+      { h: 'Portfolio project', items: ['Build', 'Deploy', 'Connect GitHub', 'Add projects', 'Share'] },
+      { h: 'Deployed through', items: ['Vercel', 'Netlify'] }
+    ] },
+
+  { n: 12, g: 'present', title: 'Resume & LinkedIn',
+    lead: 'Learn how to present yourself professionally.',
+    sections: [
+      { h: 'Resume', items: ['Resume structure', 'Writing strong project descriptions', 'Technical skills', 'Achievements', 'Education', 'Experience', 'ATS-friendly resume', 'Common resume mistakes', 'One-page resume'] },
+      { h: 'LinkedIn', items: ['Professional profile', 'Headline', 'About section', 'Skills', 'Projects', 'GitHub integration', 'Networking', 'Job search', 'Connecting with recruiters', 'Professional communication'] }
+    ] },
+
+  { n: 13, g: 'prove', title: 'Placement Preparation',
+    lead: 'Aptitude, technical interviews and the questions about your own projects.',
+    sections: [
+      { h: 'Aptitude', items: ['Quantitative aptitude', 'Logical reasoning', 'Verbal ability', 'Data interpretation', 'Time management', 'Company-style aptitude tests'] },
+      { h: 'Technical interviews', items: ['Programming', 'Python', 'DSA', 'OOP', 'DBMS', 'SQL', 'Computer Networks (fundamentals)', 'Operating Systems (fundamentals)', 'Web fundamentals', 'Projects', 'Git/GitHub', 'API concepts'] },
+      { h: 'Project-based questions', items: ['Why did you choose this technology?', 'How does your application work?', 'How does your frontend communicate with your backend?', 'How is data stored?', 'What happens when a user logs in?', 'How did you deploy your application?', 'What problems did you face?', 'How did you solve them?'] }
+    ] },
+
+  { n: 14, g: 'prove', title: 'Mock Interviews',
+    lead: 'Interview preparation happens throughout the program, not only at the end.',
+    sections: [
+      { h: 'Level 1: Basic', items: ['Programming fundamentals', 'Python', 'Basic SQL', 'Basic web development'] },
+      { h: 'Level 2: Intermediate', items: ['DSA', 'DBMS', 'APIs', 'Projects', 'Git/GitHub'] },
+      { h: 'Level 3: Technical interview', items: ['DSA', 'CS fundamentals', 'Development', 'Project architecture', 'Problem solving'] },
+      { h: 'Level 4: HR interview', items: ['Tell me about yourself', 'Strengths & weaknesses', 'Career goals', 'Why should we hire you?', 'Project discussion', 'Situational questions'] },
+      { h: 'Group discussions', items: ['Communication', 'Listening', 'Leadership', 'Structured thinking', 'Current topics', 'Professional communication'] }
+    ] },
+
+  { n: 15, g: 'prove', title: 'Final Capstone Project',
+    lead: 'Build a complete production-style project at the end of the program.',
+    sections: [
+      { h: 'Frontend', items: ['HTML', 'CSS', 'JavaScript', 'React'] },
+      { h: 'Backend', items: ['Python', 'Flask', 'REST APIs'] },
+      { h: 'Database', items: ['MySQL'] },
+      { h: 'Development', items: ['VS Code', 'Git', 'GitHub', 'Postman'] },
+      { h: 'Deployment', items: ['Vercel / Netlify', 'Supabase / Firebase / suitable backend hosting'] },
+      { h: 'AI', items: ['AI-assisted development', 'AI API integration where appropriate'] }
+    ],
+    note: 'Students build, integrate, test and deploy the complete application.' }
+];
+
+const GOALS = [
+  'Use a computer and developer tools confidently',
+  'Write programs and solve problems independently',
+  'Understand Data Structures & Algorithms',
+  'Build a complete web application',
+  'Develop frontend and backend applications',
+  'Design and use a relational database',
+  'Build and consume REST APIs',
+  'Use AI effectively as a developer',
+  'Deploy applications to the internet',
+  'Build real-world projects',
+  'Create a professional portfolio',
+  'Prepare a strong resume',
+  'Face technical and HR interviews',
+  'Participate in aptitude tests and group discussions',
+  'Understand what companies actually expect from freshers'
+];
+
+const REASONS = [
+  { t: 'DSA runs through the whole program', d: 'Not a chapter you finish and forget. Practice continues every week, alongside everything else you build.', href: '#/dsa', go: 'See how DSA fits in' },
+  { t: 'Real projects, not tutorial copies', d: 'Frontend, backend, database, authentication and deployment combined into applications you can demonstrate in interviews.', href: '#/build', go: 'See what you will build' },
+  { t: 'Weekends to learn, weekdays to practice', d: 'Saturday teaching, Sunday hands-on building, then small tasks all week.', href: '#/weekly', go: 'See a typical week' },
+  { t: 'AI that sharpens your understanding', d: 'Use AI to learn, debug and build, and be able to explain every important piece of code you submit.', href: '#/roadmap/9', go: 'See the AI module' },
+  { t: 'Interview practice all the way through', d: 'Four levels of mock interviews, group discussions, aptitude practice, a resume and a portfolio.', href: '#/placement', go: 'See placement prep' },
+  { t: 'Know what the right preparation is worth', d: 'Compare what companies offer freshers, and how quickly each package pays back your college fees.', href: '#/packages', go: 'Open the calculator' }
+];
+
+const LANES = ['Python', 'Frontend', 'Backend', 'Database', 'Projects', 'Deployment', 'Resume and portfolio', 'Mock interviews'];
+
+const METHOD = [
+  { label: '1. Read the problem', text: 'Say it back in your own words. What goes in, what should come out, and what are the edge cases?' },
+  { label: '2. Break it down', text: 'Split it into smaller problems that you already know how to solve.' },
+  { label: '3. Spot the pattern', text: 'Does it look like two pointers, a sliding window, hashing or recursion? Pattern recognition replaces memorising.' },
+  { label: '4. Write the algorithm', text: 'Describe the steps in plain language before you touch the keyboard.' },
+  { label: '5. Draft pseudocode', text: 'Turn the steps into a code-shaped outline, then into Python.' },
+  { label: '6. Check complexity', text: 'How do time and space grow as the input grows? This is where Big-O begins.' }
+];
+
+const LAYERS = [
+  { id: 'USER', blurb: 'The person using your application in a browser.', learn: ['Client vs server', 'Request / response', 'How websites and web applications actually work'] },
+  { id: 'React Frontend', blurb: 'What the user sees and clicks. Built from reusable components.', learn: ['Components, props and state', 'Hooks', 'React Router', 'API integration', 'Loading & error states', 'Authentication concepts'] },
+  { id: 'REST API', blurb: 'The agreed language between frontend and backend.', learn: ['HTTP methods', 'HTTP status codes', 'Headers', 'JSON', 'API architecture', 'Testing with Postman'] },
+  { id: 'Flask Backend', blurb: 'The Python code that receives requests, applies the rules and talks to the database.', learn: ['Routes', 'Request and response handling', 'Query and path parameters', 'Request body', 'Error handling', 'Environment variables', 'CORS'] },
+  { id: 'MySQL DB', blurb: 'Where the application stores and retrieves its data.', learn: ['Tables, primary keys and foreign keys', 'Joins', 'Constraints', 'CRUD operations', 'Connecting Flask with MySQL'] },
+  { id: 'Persistent Data', blurb: 'Data that is still there after the page closes and the server restarts.', learn: ['Transactions', 'ACID properties', 'Commit and rollback', 'Handling database errors'] }
+];
+
+const TRACE = [
+  { l: 0, t: 'A user types an email and password and presses Log in.' },
+  { l: 1, t: 'React collects the form values and sends them to your API with fetch().' },
+  { l: 2, t: 'A POST request carries the credentials as JSON to the login route.' },
+  { l: 3, t: 'Flask reads the request body, validates it and asks the database about this user.' },
+  { l: 4, t: 'MySQL looks up the matching row and returns it.' },
+  { l: 5, t: "The user's record lives in a table, so it is still there after the server restarts." },
+  { l: 3, t: 'Flask checks the result and prepares a response with a status code, such as 200 or 401.' },
+  { l: 1, t: 'React reads the response and shows the dashboard or an error message.' }
+];
+
+const DAYS = [
+  { d: 'Sat', full: 'Saturday', kind: 'Learn', cls: 'learn', blurb: 'Learn the concept, watch it built live, then talk it through.',
+    items: ['Concept teaching', 'Live coding', 'Problem solving', 'Technical discussion'] },
+  { d: 'Sun', full: 'Sunday', kind: 'Build', cls: 'build', blurb: 'Put Saturday into practice and push the project forward.',
+    items: ['Hands-on implementation', 'Project development', 'DSA practice', 'Doubt clearing', 'Interview preparation'] }
+];
+const WEEKDAY_TASKS = ['Coding problems', 'DSA problems', 'SQL exercises', 'GitHub activities', 'Mini development tasks', 'API exercises', 'Project features', 'Reading and research tasks', 'Interview questions'];
+['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].forEach((d, i) => DAYS.push({
+  d, full: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'][i], kind: 'Practice', cls: 'practice',
+  blurb: 'Small tasks keep the weekend\u2019s learning fresh until the next review.', items: WEEKDAY_TASKS, weekday: true
+}));
+
+const MOCKS = [
+  { label: 'Level 1: Basic', blurb: 'Fundamentals first.', items: ['Programming fundamentals', 'Python', 'Basic SQL', 'Basic web development'] },
+  { label: 'Level 2: Intermediate', blurb: 'Where DSA, databases and your projects start to be tested.', items: ['DSA', 'DBMS', 'APIs', 'Projects', 'Git/GitHub'] },
+  { label: 'Level 3: Technical', blurb: 'A full technical interview.', items: ['DSA', 'CS fundamentals', 'Development', 'Project architecture', 'Problem solving'] },
+  { label: 'Level 4: HR', blurb: 'The conversation about you.', items: ['Tell me about yourself', 'Strengths & weaknesses', 'Career goals', 'Why should we hire you?', 'Project discussion', 'Situational questions'] },
+  { label: 'Group discussions', blurb: 'Practised alongside the interviews.', items: ['Communication', 'Listening', 'Leadership', 'Structured thinking', 'Current topics', 'Professional communication'] }
+];
+
+const OUT = [
+  { label: 'Technical skills', items: ['Python', 'DSA', 'HTML', 'CSS', 'JavaScript', 'React', 'Flask', 'REST APIs', 'MySQL', 'Git', 'GitHub', 'Postman', 'Deployment', 'AI-assisted development'] },
+  { label: 'Career assets', items: ['GitHub profile', 'LinkedIn profile', 'Personal portfolio', 'Professional resume', 'Deployed projects', 'Real-world capstone project'] },
+  { label: 'Interview preparation', items: ['DSA practice', 'Aptitude practice', 'Technical interviews', 'HR interviews', 'Group discussions', 'Project discussions', 'Mock interviews'] }
+];
+
+const JOURNEY = ['Computer & developer tools', 'Python basics', 'Problem solving', 'DSA', 'Web development', 'React', 'Backend + APIs', 'MySQL', 'Full-stack project', 'AI', 'Deployment', 'Portfolio', 'Resume + LinkedIn', 'Aptitude + DSA practice', 'Mock interviews', 'Placement'];
+
+const BANDS = {
+  base:    { name: 'Service company base',  c: '#8A91A8' },
+  upper:   { name: 'Service company upper', c: 'var(--learn)' },
+  elite:   { name: 'Service company elite', c: 'var(--build)' },
+  product: { name: 'Product company',       c: 'var(--prove)' },
+  top:     { name: 'Top tech',              c: 'var(--present)' }
+};
+
+/* ctc = the figure used in the calculator (lakh per annum, low end of the range) */
+const OFFERS = [
+  { id: 'tcs-ninja',  co: 'TCS',            track: 'Ninja',                       ctc: 3.36, range: '3.36',        band: 'base',
+    how: 'TCS uses one test, the NQT. Your score decides whether you land in Ninja, Digital or Prime.' },
+  { id: 'infy-se',    co: 'Infosys',        track: 'System Engineer',             ctc: 3.6,  range: '3.6 to 4.5',  band: 'base',
+    how: 'The standard fresher role at Infosys, with basic coding questions.' },
+  { id: 'wipro-elite',co: 'Wipro',          track: 'Elite (NTH)',                 ctc: 3.5,  range: '3.5 to 4',    band: 'base',
+    how: "Wipro's main fresher test. The cutoff is lower than for Turbo." },
+  { id: 'techm-std',  co: 'Tech Mahindra',  track: 'Associate Software Engineer', ctc: 3.25, range: '3.25 to 4.25',band: 'base',
+    how: 'Tech Mahindra does not publish fresher pay, so confirm the exact figure on your offer letter.' },
+  { id: 'techm-high', co: 'Tech Mahindra',  track: 'Higher tracks',               ctc: 5.5,  range: '5.5 to 7.5',  band: 'upper',
+    how: 'Reported tracks above the standard role. Their names differ between sources, and the track depends on your test score.' },
+  { id: 'wipro-turbo',co: 'Wipro',          track: 'Turbo',                       ctc: 6.5,  range: '6.5 to 7',    band: 'upper',
+    how: 'The same exam as Elite, but it needs a much higher score and an advanced coding round.' },
+  { id: 'infy-dse',   co: 'Infosys',        track: 'Digital Specialist Engineer', ctc: 6.25, range: '6.25 to 7',   band: 'upper',
+    how: 'Coding rounds are tougher than for System Engineer. A joining bonus has been reported.' },
+  { id: 'tcs-digital',co: 'TCS',            track: 'Digital',                     ctc: 7,    range: '7 to 7.5',    band: 'upper',
+    how: 'Needs a higher score on the advanced section of the NQT.' },
+  { id: 'zoho',       co: 'Zoho',           track: 'Member Technical Staff',      ctc: 8,    range: '8',           band: 'product',
+    how: 'Aptitude and coding rounds first, then technical and HR interviews. Strong problem solving matters most.' },
+  { id: 'tcs-prime',  co: 'TCS',            track: 'Prime',                       ctc: 9,    range: '9 to 11.5',   band: 'elite',
+    how: 'The top track of the NQT, above Digital.' },
+  { id: 'infy-sp1',   co: 'Infosys',        track: 'Specialist Programmer L1',    ctc: 10,   range: '10 to 11',    band: 'elite',
+    how: 'A coding-heavy role that needs strong programming and problem solving. A joining bonus has been reported.' },
+  { id: 'infy-sp2',   co: 'Infosys',        track: 'Specialist Programmer L2',    ctc: 16,   range: '16',          band: 'elite',
+    how: 'A higher tier of the Specialist Programmer ladder, built for stronger programming proficiency.' },
+  { id: 'infy-sp3',   co: 'Infosys',        track: 'Specialist Programmer L3',    ctc: 21,   range: '21',          band: 'elite',
+    how: 'The top of the ladder, aimed at candidates ready for AI-first specialist work. A niche role, not mass hiring.' },
+  { id: 'amazon',     co: 'Amazon',         track: 'SDE-1',                       ctc: 30,   range: '30 to 38',    band: 'top',
+    how: 'Strong DSA and problem solving are expected. Part of the total is stock that vests over four years.' },
+  { id: 'google',     co: 'Google',         track: 'Software Engineer L3',        ctc: 35,   range: '35 to 50',    band: 'top',
+    how: 'Very selective, with limited fresher hiring in India. A large part of the total is stock.' }
+];
+
+const PAGES = [
+  { id: 'home', label: 'Home' },
+  { id: 'roadmap', label: 'Roadmap' },
+  { id: 'dsa', label: 'DSA' },
+  { id: 'build', label: 'Build' },
+  { id: 'weekly', label: 'Weekly plan' },
+  { id: 'placement', label: 'Placement' },
+  { id: 'packages', label: 'Packages' },
+  { id: 'outcomes', label: 'Outcomes' }
+];
+
+/* ============================================================
+   Navigation
+============================================================ */
+function buildNav() {
+  const mk = () => PAGES.map(p => el('li', {}, el('a', { href: '#/' + p.id, 'data-nav': p.id, text: p.label })));
+  $('#navList').append(...mk());
+  $('#footNav').append(...mk());
+  $('#menuBtn').addEventListener('click', () => {
+    const open = $('#top').classList.toggle('open');
+    $('#menuBtn').setAttribute('aria-expanded', String(open));
+  });
+  $('#skip').addEventListener('click', e => { e.preventDefault(); const h = $('.page:not([hidden]) h1'); (h || $('#main')).focus({ preventScroll: false }); });
+}
+
+/* ============================================================
+   Home
+============================================================ */
+let routeTimers = [];
+let routePlayed = false;
+
+function setCaption(n) {
+  const m = MODULES[n - 1];
+  $('#capTitle').textContent = `${pad(m.n)}  ${m.title}`;
+  $('#capText').textContent = m.lead;
+  const a = $('#capLink'); a.href = '#/roadmap/' + m.n; a.textContent = 'Open this station';
+  $$('.stn').forEach(s => s.classList.toggle('sel', +s.dataset.n === n));
+}
+function defaultCaption() {
+  $('#capTitle').textContent = 'Fifteen stations, one route.';
+  $('#capText').textContent = 'Hover, tap or focus any station to see what you learn there.';
+  const a = $('#capLink'); a.href = '#/roadmap'; a.textContent = 'Open the roadmap';
+  $$('.stn').forEach(s => s.classList.remove('sel'));
+}
+function finishRoute() {
+  routeTimers.forEach(clearTimeout); routeTimers = [];
+  $$('.stn').forEach(s => s.classList.add('on'));
+  $('#routeFill').style.width = '100%';
+}
+function playRoute() {
+  routeTimers.forEach(clearTimeout); routeTimers = [];
+  const stns = $$('.stn'), fill = $('#routeFill');
+  if (reduced) { finishRoute(); defaultCaption(); return; }
+  stns.forEach(s => s.classList.remove('on'));
+  fill.style.width = '0%';
+  stns.forEach((s, i) => routeTimers.push(setTimeout(() => {
+    s.classList.add('on');
+    fill.style.width = (i / (stns.length - 1) * 100) + '%';
+    setCaption(i + 1);
+  }, 500 + i * 260)));
+  routeTimers.push(setTimeout(defaultCaption, 500 + stns.length * 260 + 1000));
+}
+function buildRoute() {
+  const row = $('#routeRow');
+  MODULES.forEach(m => {
+    const stn = el('button', {
+      class: 'stn on', type: 'button', 'data-n': m.n, style: `--cl:${GROUPS[m.g].cl}`,
+      'aria-label': `Station ${m.n}: ${m.title}`
+    }, el('i'), el('b', { text: pad(m.n) }));
+    const show = () => { finishRoute(); setCaption(m.n); };
+    stn.addEventListener('mouseenter', show);
+    stn.addEventListener('focus', show);
+    stn.addEventListener('click', show);
+    row.append(stn);
+  });
+  $('#routeFill').style.width = '100%';
+  $('#replay').addEventListener('click', playRoute);
+  const legend = $('#legend');
+  Object.entries(GROUPS).forEach(([k, g]) => {
+    const ms = MODULES.filter(m => m.g === k);
+    legend.append(el('li', { style: `--cl:${g.cl}`, text: `${g.name}, stations ${pad(ms[0].n)} to ${pad(ms[ms.length - 1].n)}` }));
+  });
+  defaultCaption();
+}
+
+function buildGoals() {
+  const grid = $('#goalsGrid');
+  const done = new Set(store.get('goals', []));
+  const update = () => {
+    const n = done.size;
+    $('#goalFill').style.width = (n / GOALS.length * 100) + '%';
+    $('#goalNum').textContent = `${n} / ${GOALS.length}`;
+    $('#goalMsg').textContent = n === 0 ? 'Nothing ticked yet. That is a fine place to start.'
+      : n === GOALS.length ? 'You ticked everything. The mock interviews will put that to the test.'
+      : `You can do ${n} of ${GOALS.length} today. This program is built to take you to ${GOALS.length}.`;
+  };
+  GOALS.forEach((g, i) => {
+    const input = el('input', { type: 'checkbox', id: 'goal' + i });
+    input.checked = done.has(i);
+    input.addEventListener('change', () => {
+      input.checked ? done.add(i) : done.delete(i);
+      store.set('goals', [...done]); update();
+    });
+    grid.append(el('label', { class: 'goal', for: 'goal' + i }, input, el('span', { class: 'box' }), el('span', { class: 'gt', text: g })));
+  });
+  update();
+}
+
+function buildReasons() {
+  const host = $('#reasons');
+  REASONS.forEach(r => host.append(el('a', { class: 'row', href: r.href }, el('h3', { text: r.t }), el('p', { text: r.d }), el('span', { class: 'go', text: r.go }))));
+}
+
+/* ============================================================
+   Roadmap
+============================================================ */
+let current = 1;
+const INDEX = MODULES.flatMap(m => [
+  { n: m.n, text: m.title },
+  ...m.sections.flatMap(s => s.items.map(t => ({ n: m.n, text: t })))
+]);
+
+function renderPanel(m) {
+  const g = GROUPS[m.g], p = $('#panel');
+  p.style.setProperty('--c', g.c);
+  p.innerHTML = '';
+  const prev = MODULES[m.n - 2], next = MODULES[m.n];
+  p.append(el('div', {},
+    el('div', { class: 'meta', text: `Station ${m.n} of ${MODULES.length}, ${g.name}` }),
+    el('h2', { text: m.title }),
+    el('p', { class: 'lead', text: m.lead }),
+    m.sections.map(s => el('div', { class: 'pg' }, s.h ? el('h3', { text: s.h }) : null, el('div', {}, chips(s.items)))),
+    m.note ? el('p', { class: 'note', text: m.note }) : null,
+    m.outcome ? el('div', { class: 'outcome' }, el('strong', { text: 'Outcome' }), el('p', { text: m.outcome })) : null,
+    el('div', { class: 'pnav' },
+      prev ? el('button', { class: 'btn btn-line', type: 'button', onclick: () => selectStation(prev.n, { scroll: true }) }, `Previous: ${prev.title}`) : el('span'),
+      next ? el('button', { class: 'btn btn-ink', type: 'button', onclick: () => selectStation(next.n, { scroll: true }) }, `Next: ${next.title}`) : el('span'))
+  ));
+  p.classList.remove('swap'); void p.offsetWidth; p.classList.add('swap');
+  p.scrollTop = 0;
+}
+
+function selectStation(n, opts = {}) {
+  n = Math.min(Math.max(parseInt(n) || 1, 1), MODULES.length);
+  current = n;
+  $$('.st').forEach(b => b.setAttribute('aria-current', +b.dataset.n === n ? 'true' : 'false'));
+  renderPanel(MODULES[n - 1]);
+  if (opts.hash !== false) { try { history.replaceState(null, '', '#/roadmap/' + n); } catch (e) {} }
+  if (opts.scroll && matchMedia('(max-width:900px)').matches) $('#panel').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+}
+
+function buildRoadmap() {
+  const list = $('#stations');
+  let lastG = null;
+  MODULES.forEach((m, i) => {
+    const g = GROUPS[m.g];
+    if (m.g !== lastG) { list.append(el('li', { class: 'grp', style: `--c:${g.c}`, text: g.name })); lastG = m.g; }
+    const first = !MODULES[i - 1] || MODULES[i - 1].g !== m.g;
+    const last = !MODULES[i + 1] || MODULES[i + 1].g !== m.g;
+    list.append(el('li', { class: 's' + (first ? ' first' : '') + (last ? ' last' : ''), style: `--c:${g.c}` },
+      el('button', { class: 'st', type: 'button', 'data-n': m.n, 'aria-current': 'false', onclick: () => selectStation(m.n, { scroll: true }) },
+        el('span', { class: 'dot' }), el('span', { class: 'st-n', text: pad(m.n) }), el('span', { class: 'st-t', text: m.title }))));
+  });
+
+  const input = $('#finderInput'), out = $('#finderOut');
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    out.innerHTML = '';
+    $$('.st').forEach(b => b.classList.remove('match'));
+    list.classList.toggle('searching', q.length > 0);
+    if (!q) return;
+    const hits = new Map();
+    INDEX.forEach(x => { if (x.text.toLowerCase().includes(q)) { if (!hits.has(x.n)) hits.set(x.n, []); const a = hits.get(x.n); if (!a.includes(x.text)) a.push(x.text); } });
+    if (!hits.size) { out.append(el('p', { class: 'finder-empty', text: `No topic matches "${input.value.trim()}".` })); list.classList.remove('searching'); return; }
+    [...hits.keys()].forEach(n => $(`.st[data-n="${n}"]`).classList.add('match'));
+    [...hits.entries()].slice(0, 6).forEach(([n, topics]) => {
+      const m = MODULES[n - 1];
+      out.append(el('button', { type: 'button', style: `--c:${GROUPS[m.g].c}`, onclick: () => selectStation(n, { scroll: true }) },
+        el('strong', { text: `Station ${n}: ${m.title}` }),
+        el('span', { text: topics.slice(0, 3).join(', ') })));
+    });
+  });
+}
+
+/* ============================================================
+   DSA
+============================================================ */
+function buildDsa() {
+  /* parallel lanes */
+  const host = $('#lanes'), cap = $('#laneCap');
+  const top = el('div', { class: 'lane-top' }), bar = el('div', { class: 'lane-bar' });
+  const setLane = i => {
+    $$('.seg', host).forEach((s, j) => s.classList.toggle('on', i === j));
+    $$('.cell', host).forEach((c, j) => c.classList.toggle('on', i === j));
+    cap.textContent = i === 0 ? 'Problem solving starts inside Python, and DSA grows out of it.'
+      : i === LANES.length - 1 ? 'DSA appears in the Level 2 and Level 3 mock interviews.'
+      : `While you work on ${LANES[i].toLowerCase()}, DSA practice carries on: Sunday sessions and weekday problems.`;
+  };
+  LANES.forEach((name, i) => {
+    top.append(el('button', { class: 'seg', type: 'button', onmouseenter: () => setLane(i), onfocus: () => setLane(i), onclick: () => setLane(i) }, name));
+    bar.append(el('div', { class: 'cell', text: 'DSA', 'aria-hidden': 'true' }));
+  });
+  host.append(top, bar);
+  cap.textContent = 'Pick a stage above. DSA is running underneath every one of them.';
+
+  /* method */
+  makeTabs($('#methodTabs'), METHOD, m => el('p', { class: 'step-detail', text: m.text }), 'Problem-solving steps');
+
+  /* topics */
+  const dsa = MODULES[2];
+  const groups = dsa.sections.filter(s => s.h !== 'Practice');
+  const total = groups.reduce((a, s) => a + s.items.length, 0);
+  const done = new Set(store.get('dsa', []));
+  const update = () => {
+    $('#dsaFill').style.width = (done.size / total * 100) + '%';
+    $('#dsaNum').textContent = `${done.size} / ${total}`;
+  };
+  const host2 = $('#topics');
+  groups.forEach(s => {
+    host2.append(el('div', { class: 'topic-row' },
+      el('h3', { text: s.h }),
+      el('div', {}, s.items.map(t => {
+        const b = el('button', { class: 'chip', type: 'button', 'aria-pressed': done.has(t) ? 'true' : 'false', text: t });
+        b.addEventListener('click', () => {
+          const on = b.getAttribute('aria-pressed') !== 'true';
+          b.setAttribute('aria-pressed', String(on));
+          on ? done.add(t) : done.delete(t);
+          store.set('dsa', [...done]); update();
+        });
+        return b;
+      }))));
+  });
+  update();
+}
+
+/* ============================================================
+   Build
+============================================================ */
+let traceTimer = null;
+function buildBuild() {
+  const stack = $('#stack'), detail = $('#archDetail');
+  const btns = [];
+  LAYERS.forEach((L, i) => {
+    const b = el('button', { class: 'layer', type: 'button', onclick: () => { stopTrace(); showLayer(i); } }, L.id);
+    btns.push(b); stack.append(b);
+    if (i < LAYERS.length - 1) stack.append(el('div', { class: 'conn', 'aria-hidden': 'true' }));
+  });
+
+  const traceCap = el('p', { text: 'Press the button to follow one login through every layer.' });
+  const traceBtn = el('button', { class: 'btn btn-signal', type: 'button' }, 'Trace a login');
+  const title = el('h3'), blurb = el('p'), learn = el('div');
+  detail.append(title, blurb, el('div', { class: 'pg' }, el('h3', { class: 'sub-h', style: 'margin-top:0', text: 'What you learn here' }), learn),
+    el('div', { class: 'trace' }, traceCap, traceBtn));
+
+  function showLayer(i) {
+    btns.forEach((b, j) => { b.classList.toggle('on', i === j); b.classList.remove('pulse'); });
+    title.textContent = LAYERS[i].id; blurb.textContent = LAYERS[i].blurb;
+    learn.innerHTML = ''; learn.append(...chips(LAYERS[i].learn));
+  }
+  function stopTrace() {
+    clearTimeout(traceTimer); traceTimer = null;
+    btns.forEach(b => b.classList.remove('pulse'));
+    traceBtn.textContent = 'Trace a login';
+  }
+  traceBtn.addEventListener('click', () => {
+    if (traceTimer) { stopTrace(); traceCap.textContent = 'Press the button to follow one login through every layer.'; return; }
+    let i = 0;
+    traceBtn.textContent = 'Stop';
+    const step = () => {
+      if (i >= TRACE.length) { stopTrace(); traceBtn.textContent = 'Trace again'; return; }
+      const s = TRACE[i++];
+      btns.forEach((b, j) => { b.classList.toggle('pulse', j === s.l); });
+      showLayerSoft(s.l);
+      traceCap.textContent = `${i} of ${TRACE.length}. ${s.t}`;
+      traceTimer = setTimeout(step, 2200);
+    };
+    step();
+  });
+  function showLayerSoft(i) {
+    btns.forEach((b, j) => b.classList.toggle('on', false));
+    title.textContent = LAYERS[i].id; blurb.textContent = LAYERS[i].blurb;
+    learn.innerHTML = ''; learn.append(...chips(LAYERS[i].learn));
+  }
+  showLayer(1);
+
+  /* ideas */
+  const ideas = MODULES[7].sections[1].items;
+  const grid = $('#ideas');
+  ideas.forEach(t => grid.append(el('div', { class: 'idea', text: t })));
+  let last = -1;
+  $('#pickIdea').addEventListener('click', () => {
+    let k; do { k = Math.floor(Math.random() * ideas.length); } while (k === last && ideas.length > 1);
+    last = k;
+    $$('.idea').forEach((d, j) => d.classList.toggle('pick', j === k));
+  });
+
+  /* craft + stack */
+  MODULES[7].sections[2].items.forEach(t => $('#craft').append(el('li', { text: t })));
+  MODULES[14].sections.forEach(s => $('#stackdl').append(el('div', {}, el('dt', { text: s.h }), el('dd', {}, chips(s.items)))));
+
+  /* deployment */
+  const dep = MODULES[9].sections;
+  $('#platforms').append(...chips(dep[0].items));
+  $('#deployConcepts').append(...chips(dep[1].items));
+  $('#deployIntro').append(...chips(dep[2].items));
+}
+
+/* ============================================================
+   Weekly
+============================================================ */
+function buildWeekly() {
+  const days = $('#days'), detail = $('#dayDetail');
+  const btns = DAYS.map((d, i) => el('button', { class: `day ${d.cls}`, type: 'button', 'aria-pressed': 'false', onclick: () => show(i) },
+    el('strong', { text: d.d }), el('span', { text: d.kind })));
+  btns.forEach(b => days.append(b));
+  function show(i) {
+    const d = DAYS[i];
+    btns.forEach((b, j) => b.setAttribute('aria-pressed', String(i === j)));
+    detail.innerHTML = '';
+    detail.classList.remove('fade-in'); void detail.offsetWidth; detail.classList.add('fade-in');
+    detail.append(el('h3', { text: d.weekday ? `${d.full}: small daily tasks` : `${d.full}: ${d.kind}` }), el('p', { text: d.blurb }));
+    if (d.weekday) {
+      detail.append(el('div', {}, chips(d.items)));
+      const out = el('output', { text: '' });
+      detail.append(el('div', { class: 'dice' },
+        el('button', { class: 'btn btn-line', type: 'button', onclick: () => { out.textContent = d.items[Math.floor(Math.random() * d.items.length)]; } }, 'Give me a task'),
+        out));
+    } else {
+      detail.append(el('ul', { class: 'ticklist' }, d.items.map(t => el('li', { text: t }))));
+    }
+  }
+  show(0);
+}
+
+/* ============================================================
+   Placement
+============================================================ */
+function buildPlacement() {
+  const Q = MODULES[12].sections[2].items;
+  let order = Q.map((_, i) => i), pos = 0;
+  const show = () => {
+    $('#qNum').textContent = `Question ${pos + 1} of ${Q.length}`;
+    $('#qText').textContent = Q[order[pos]];
+  };
+  $('#qNext').addEventListener('click', () => { pos = (pos + 1) % Q.length; show(); });
+  $('#qPrev').addEventListener('click', () => { pos = (pos - 1 + Q.length) % Q.length; show(); });
+  $('#qShuffle').addEventListener('click', () => {
+    for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+    pos = 0; show();
+  });
+  show();
+
+  makeTabs($('#mockTabs'), MOCKS, m => el('div', { class: 'mock-level' }, el('h3', { text: m.label }), el('p', { text: m.blurb }), el('div', {}, chips(m.items))), 'Mock interview levels');
+
+  const p = MODULES[12].sections;
+  $('#aptitude').append(...chips(p[0].items));
+  $('#techSubjects').append(...chips(p[1].items));
+  const r = MODULES[11].sections;
+  r[0].items.forEach(t => $('#resumeList').append(el('li', { text: t })));
+  r[1].items.forEach(t => $('#linkedinList').append(el('li', { text: t })));
+}
+
+/* ============================================================
+   Packages and fee calculator
+============================================================ */
+const lakh = n => String(Math.round(n * 100) / 100);
+const rupeeL = n => '\u20B9' + lakh(n) + ' L';
+const inr = n => '\u20B9' + Math.round(n).toLocaleString('en-IN');
+const yrs = y => !isFinite(y) ? 'Not recovered' : y < 1 ? Math.max(1, Math.round(y * 12)) + ' months' : (Math.round(y * 10) / 10) + ' years';
+
+function buildPackages() {
+  const pk = { sel: 'tcs-digital', band: 'all', perYear: 3, years: 4, take: 75, exp: 0 };
+  const sorted = [...OFFERS].sort((a, b) => a.ctc - b.ctc);
+  const get = id => OFFERS.find(o => o.id === id);
+
+  function calc(o) {
+    const total = pk.perYear * pk.years;
+    const take = o.ctc * pk.take / 100;
+    const net = take - pk.exp * 12 / 100000;
+    return { total, take, net, y: net > 0 ? total / net : Infinity, monthly: take * 100000 / 12, after5: net * 5 - total };
+  }
+  function mark() { $$('.pkg').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === pk.sel))); }
+  function select(id) { pk.sel = id; mark(); drawDetail(); drawResult(); }
+
+  function row(o, valText, pct) {
+    return el('button', { class: 'pkg', type: 'button', 'data-id': o.id, 'aria-pressed': String(o.id === pk.sel), style: '--bc:' + BANDS[o.band].c, onclick: () => select(o.id) },
+      el('span', { class: 'pkg-name' }, el('strong', { text: o.co }), el('span', { text: o.track })),
+      el('span', { class: 'pkg-bar', 'aria-hidden': 'true' }, el('i', { style: 'width:' + pct + '%' })),
+      el('span', { class: 'pkg-val', text: valText }));
+  }
+
+  /* offers list */
+  const filters = $('#pkgFilters'), list = $('#pkgList');
+  function drawList() {
+    list.innerHTML = '';
+    sorted.filter(o => pk.band === 'all' || o.band === pk.band)
+      .forEach(o => list.append(row(o, '\u20B9' + o.range + ' LPA', Math.max(2, o.ctc / 50 * 100))));
+  }
+  [['all', 'All']].concat(Object.entries(BANDS).map(([k, b]) => [k, b.name])).forEach(([k, label]) => {
+    filters.append(el('button', { class: 'chip', type: 'button', 'data-b': k, 'aria-pressed': String(k === 'all'),
+      onclick: () => { pk.band = k; $$('button', filters).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.b === k))); drawList(); } }, label));
+  });
+
+  function drawDetail() {
+    const o = get(pk.sel), d = $('#pkgDetail');
+    d.style.setProperty('--bc', BANDS[o.band].c);
+    d.innerHTML = '';
+    d.append(el('h3', { text: o.co + ': ' + o.track }),
+      el('p', { class: 'meta', text: '\u20B9' + o.range + ' LPA. ' + BANDS[o.band].name + '.' }),
+      el('p', { text: o.how }),
+      el('button', { class: 'btn btn-line', type: 'button', onclick: () => $('#calc').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' }) }, 'See what this means for your fees'));
+    d.classList.remove('fade-in'); void d.offsetWidth; d.classList.add('fade-in');
+  }
+
+  /* calculator */
+  const rec = $('#recList');
+  function drawResult() {
+    const o = get(pk.sel), r = calc(o), res = $('#calcRes');
+    res.style.setProperty('--bc', BANDS[o.band].c);
+    res.innerHTML = '';
+    const items = [
+      ['Fees recovered in', yrs(r.y)],
+      ['Monthly take-home (estimate)', inr(r.monthly)],
+      ['Total spent on the degree', rupeeL(r.total)],
+      ['Position after 5 years', (r.after5 >= 0 ? '+' : '\u2212') + rupeeL(Math.abs(r.after5))]
+    ];
+    if (pk.exp > 0) items.splice(2, 0, ['Left each month after expenses', inr(Math.max(0, r.net) * 100000 / 12)]);
+
+    const base = OFFERS[0], rb = calc(base);
+    let cmp;
+    if (o.id === base.id) cmp = base.co + ' ' + base.track + ' is the baseline. Higher bands recover the same fees much faster.';
+    else if (isFinite(r.y) && isFinite(rb.y)) cmp = 'Compared with ' + base.co + ' ' + base.track + ', this recovers your fees ' + yrs(rb.y - r.y) + ' sooner.';
+    else if (isFinite(r.y)) cmp = 'At ' + base.co + ' ' + base.track + ' pay, your fees would not be recovered with these expenses.';
+    else cmp = 'With these expenses, this package does not recover the fees.';
+
+    const warn = o.band === 'top'
+      ? 'Part of this package is stock that vests over four years, so the cash in year one is lower than shown.'
+      : (pk.exp === 0 ? 'Living costs are not included. Add monthly expenses for a more realistic figure.' : '');
+
+    res.append(el('h3', { text: o.co + ': ' + o.track }),
+      el('p', { class: 'sub', text: 'Calculated at \u20B9' + lakh(o.ctc) + ' LPA, with ' + pk.take + '% taken home.' }),
+      el('dl', {}, items.map(([a, b]) => el('div', {}, el('dt', { text: a }), el('dd', { text: b })))),
+      el('p', { class: 'cmp', text: cmp }),
+      warn ? el('p', { class: 'warn', text: warn }) : null);
+
+    const finite = sorted.map(x => calc(x).y).filter(isFinite);
+    const maxY = finite.length ? Math.max(...finite) : 1;
+    rec.innerHTML = '';
+    sorted.forEach(x => {
+      const y = calc(x).y;
+      rec.append(row(x, yrs(y), isFinite(y) ? Math.max(3, y / maxY * 100) : 100));
+    });
+  }
+  function drawInputs() {
+    $('#oYear').textContent = rupeeL(pk.perYear);
+    $('#oYears').textContent = pk.years + ' years';
+    $('#oTake').textContent = pk.take + '%';
+    $('#oTotal').textContent = rupeeL(pk.perYear * pk.years);
+    drawResult();
+  }
+  const bind = (id, key, num = true) => $(id).addEventListener('input', e => { pk[key] = Math.max(0, parseFloat(e.target.value) || 0); drawInputs(); });
+  bind('#cYear', 'perYear'); bind('#cYears', 'years'); bind('#cTake', 'take'); bind('#cExp', 'exp');
+  $('#pFees').addEventListener('click', () => { pk.perYear = 1.5; $('#cYear').value = 1.5; drawInputs(); });
+  $('#pHostel').addEventListener('click', () => { pk.perYear = 3; $('#cYear').value = 3; drawInputs(); });
+
+  drawList(); drawDetail(); drawInputs();
+}
+
+/* ============================================================
+   Outcomes
+============================================================ */
+function buildOutcomes() {
+  makeTabs($('#outTabs'), OUT, o => el('ul', { class: 'ticklist out-list' }, o.items.map(t => el('li', { text: t }))), 'What you will have');
+  JOURNEY.forEach(t => $('#journey').append(el('li', {}, el('span', { text: t }))));
+
+  const join = $('#join');
+  const rows = [['Schedule', CONFIG.schedule], ['Starts', CONFIG.startDate], ['Duration', CONFIG.duration], ['Contact', CONFIG.contact]].filter(r => r[1]);
+  join.append(el('dl', {}, rows.map(r => el('div', {}, el('dt', { text: r[0] }), el('dd', { text: r[1] })))));
+  if (CONFIG.registerUrl) {
+    join.append(el('p', { class: 'msg', text: 'Ready to start? Register your place.' }),
+      el('a', { class: 'btn btn-signal', href: CONFIG.registerUrl, target: '_blank', rel: 'noopener' }, 'Register now'));
+  } else {
+    join.append(el('p', { class: 'msg', text: 'Registration details will be shared by your instructor.' }),
+      el('a', { class: 'btn btn-signal', href: '#/roadmap' }, 'Review the roadmap'));
+  }
+}
+
+/* ============================================================
+   Router
+============================================================ */
+function route() {
+  const raw = location.hash.replace(/^#\/?/, '');
+  const [id, arg] = raw.split('/');
+  const page = PAGES.find(p => p.id === id) || PAGES[0];
+
+  $$('.page').forEach(s => { s.hidden = s.id !== 'page-' + page.id; });
+  $$('[data-nav]').forEach(a => {
+    if (a.dataset.nav === page.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  document.title = (page.id === 'home' ? '' : page.label + ' | ') + CONFIG.programName;
+  $('#top').classList.remove('open'); $('#menuBtn').setAttribute('aria-expanded', 'false');
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+  const sec = $('#page-' + page.id);
+  sec.classList.remove('fade-in'); void sec.offsetWidth; sec.classList.add('fade-in');
+  const h1 = $('h1', sec); if (h1) { h1.tabIndex = -1; h1.focus({ preventScroll: true }); }
+
+  if (page.id === 'roadmap') selectStation(arg || current, { hash: false, scroll: false });
+  if (page.id === 'home' && !routePlayed) { routePlayed = true; playRoute(); }
+}
+
+/* ============================================================
+   Init
+============================================================ */
+buildNav();
+buildRoute();
+buildGoals();
+buildReasons();
+buildRoadmap();
+buildDsa();
+buildBuild();
+buildWeekly();
+buildPlacement();
+buildPackages();
+buildOutcomes();
+window.addEventListener('hashchange', route);
+route();
+})();
+</script>
+</body>
+</html>
