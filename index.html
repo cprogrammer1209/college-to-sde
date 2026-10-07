@@ -408,6 +408,7 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
 /* ------------------------------------------------------------
    Packages and fee calculator
 ------------------------------------------------------------ */
+.lead-para{font-size:clamp(19px,2vw,23px);line-height:1.55;max-width:70ch;color:var(--ink2);margin-bottom:40px}
 .chips-bar{display:flex;flex-wrap:wrap;gap:4px 8px;margin-bottom:24px}
 .pkg-list{border-top:2px solid var(--ink)}
 .pkg{display:grid;grid-template-columns:minmax(150px,260px) 1fr minmax(100px,150px);gap:8px 20px;align-items:center;width:100%;padding:14px 10px;background:none;border:0;border-bottom:1px solid var(--rule);text-align:left;cursor:pointer}
@@ -415,6 +416,7 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
 .pkg[aria-pressed="true"]{background:#fff;box-shadow:inset 5px 0 0 var(--ink)}
 .pkg-name strong{display:block;line-height:1.2}
 .pkg-name span{font-size:14.5px;color:var(--muted)}
+.pkg-name .pkg-ctc{display:block;margin-top:2px;font-weight:700;color:var(--ink)}
 .pkg-bar{height:14px;border-radius:7px;background:rgba(21,24,43,.08);overflow:hidden}
 .pkg-bar i{display:block;height:100%;border-radius:7px;background:var(--bc);transition:width .35s}
 .pkg-val{font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
@@ -449,6 +451,28 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
 .band-list strong{font-family:var(--font-d);font-size:22px;letter-spacing:-.01em}
 .cta-row{display:flex;flex-wrap:wrap;gap:12px}
 
+.pkg-item{position:relative;border-bottom:1px solid var(--rule)}
+.pkg-item .pkg{border-bottom:0;transition:padding-bottom .25s ease}
+.pkg-item.open .pkg{padding-bottom:46px}
+.iv-btn{position:absolute;left:10px;bottom:12px;z-index:5;padding:5px 12px;border:0;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:13px;line-height:1.4;white-space:nowrap;cursor:pointer;box-shadow:0 4px 14px rgba(21,24,43,.28);opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s,background .15s}
+.iv-btn.show{opacity:1;visibility:visible;transition:opacity .2s ease,visibility 0s,background .15s}
+.iv-btn:hover{background:var(--build)}
+.detail-actions{display:flex;flex-wrap:wrap;gap:10px}
+body.modal-open{overflow:hidden}
+.modal{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(21,24,43,.68)}
+.modal-box{position:relative;width:min(680px,100%);max-height:86vh;overflow:auto;background:#fff;border-top:6px solid var(--bc,var(--build));border-radius:var(--r);padding:32px clamp(20px,4vw,36px) 28px;animation:fadeIn .22s ease-out}
+.modal-box h3{font-size:clamp(24px,3vw,32px);margin:0 44px 6px 0}
+.modal-box .sub{color:var(--muted);margin-bottom:18px}
+.modal-x{position:absolute;top:14px;right:14px;width:40px;height:40px;border:2px solid var(--ink);border-radius:50%;background:#fff;font-size:22px;line-height:1;cursor:pointer}
+.modal-x:hover{background:var(--ink);color:#fff}
+.iv-list{border-top:2px solid var(--ink)}
+.iv-list a{display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:baseline;padding:14px 4px;border-bottom:1px solid var(--rule);text-decoration:none}
+.iv-list a:hover{background:var(--paper)}
+.iv-list strong{line-height:1.3}
+.iv-list a:hover strong{text-decoration:underline;text-underline-offset:3px}
+.iv-src{font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.iv-note{grid-column:1/-1;font-size:14.5px;color:var(--muted)}
+.modal-box .fine{margin-top:18px}
 @media (max-width:900px){
   .calc{grid-template-columns:1fr;gap:32px}
 }
@@ -526,6 +550,75 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
       </div>
     </div>
   </div>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <p class="lead-para">If you follow this roadmap and prepare well, you can aim for the packages below. Each stage of learning moves you into a higher band of offers, and a better package recovers your college fees faster, in around 1 to 2 years instead of 4 to 5. Once the fees are recovered, your salary is yours to shape: support your family, build savings, invest early and keep growing.</p>
+      <h2>What the packages look like</h2>
+      <p class="intro">Fresher offers run from about &#8377;3 lakh to well over &#8377;30 lakh a year, and which band you land in depends on how well you prepare. Approximate 2026 CTC in lakhs per annum (LPA). Click a company to see how students reach it, and to find interview experiences for that track.</p>
+      <div class="chips-bar" id="pkgFilters" role="group" aria-label="Filter by band"></div>
+      <div class="pkg-list" id="pkgList"></div>
+      <div class="pkg-detail fade-in" id="pkgDetail" aria-live="polite"></div>
+      <p class="fine">Figures are approximate and come from public sources and candidate reports. Companies change them every hiring year, and many do not publish fresher pay. CTC is the total package, not take-home. Where a package includes stock, it vests over several years, so the first year pays less in cash.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="calc">
+    <div class="wrap">
+      <h2>How fast can you recover your fees?</h2>
+      <p class="intro">Enter what your degree costs. The calculator shows how long it takes to earn that back at each package.</p>
+      <div class="calc">
+        <div>
+          <div class="ctl">
+            <div class="lab"><label for="cYear">Cost per year</label><output id="oYear"></output></div>
+            <input id="cYear" type="range" min="1" max="5" step="0.25" value="3">
+            <div class="presets">
+              <button class="chip" type="button" id="pFees">College fees only: 1.5 L</button>
+              <button class="chip" type="button" id="pHostel">Fees and hostel: 3 L</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cYears">Years of study</label><output id="oYears"></output></div>
+            <input id="cYears" type="range" min="2" max="6" step="1" value="4">
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cTake">Take-home share of package</label><output id="oTake"></output></div>
+            <input id="cTake" type="range" min="60" max="90" step="1" value="75">
+            <p class="help">IT-services roles typically take home about 70 to 80 percent of CTC.</p>
+          </div>
+          <div class="ctl">
+            <div class="lab"><label for="cExp">Monthly expenses after joining (&#8377;)</label></div>
+            <input id="cExp" type="number" min="0" step="1000" value="0">
+            <p class="help">Optional. Leave at 0 to ignore living costs.</p>
+          </div>
+          <div class="total"><span>Total spent on the degree</span><strong id="oTotal"></strong></div>
+        </div>
+        <div>
+          <div class="res" id="calcRes" aria-live="polite"></div>
+          <h3 class="sub-h">Time to recover, by package</h3>
+          <div class="pkg-list" id="recList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec alt">
+    <div class="wrap">
+      <h2>The band you land in is decided by preparation</h2>
+      <p class="intro">The gap between the lowest and highest bands at the same company comes down to test scores and coding ability.</p>
+      <ul class="band-list">
+        <li><strong>TCS</strong><span>One test, the NQT. Your score decides whether you get Ninja, Digital or Prime.</span></li>
+        <li><strong>Wipro</strong><span>Turbo uses the same exam as Elite, with a higher cutoff and an advanced coding round.</span></li>
+        <li><strong>Infosys</strong><span>Specialist Programmer and Digital Specialist Engineer roles have tougher coding rounds than System Engineer.</span></li>
+        <li><strong>Zoho</strong><span>Aptitude and coding rounds first, then technical and HR interviews.</span></li>
+      </ul>
+      <p class="intro">Aptitude, DSA, projects and mock interviews are exactly what this program trains, from the first weekend.</p>
+      <div class="cta-row">
+        <a class="btn btn-ink" href="#/roadmap">See the roadmap</a>
+        <a class="btn btn-line" href="#/placement">See placement prep</a>
+      </div>
+    </div>
+  </section>
 
   <section class="sec">
     <div class="wrap">
@@ -789,84 +882,6 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
   </section>
 </section>
 
-<!-- ======================= PACKAGES ======================= -->
-<section class="page" id="page-packages" hidden>
-  <div class="wrap">
-    <div class="page-head">
-      <h1>What the packages look like.</h1>
-      <p>Fresher offers run from about &#8377;3 lakh to well over &#8377;30 lakh a year. Which band you land in depends on how well you prepare.</p>
-    </div>
-  </div>
-
-  <section class="sec alt">
-    <div class="wrap">
-      <h2>Offers by company</h2>
-      <p class="intro">Approximate 2026 CTC for freshers, in lakhs per annum (LPA). Choose a track to see how students reach it.</p>
-      <div class="chips-bar" id="pkgFilters" role="group" aria-label="Filter by band"></div>
-      <div class="pkg-list" id="pkgList"></div>
-      <div class="pkg-detail fade-in" id="pkgDetail" aria-live="polite"></div>
-      <p class="fine">Figures are approximate and come from public sources and candidate reports. Companies change them every hiring year, and many do not publish fresher pay. CTC is the total package, not take-home. Where a package includes stock, it vests over several years, so the first year pays less in cash.</p>
-    </div>
-  </section>
-
-  <section class="sec" id="calc">
-    <div class="wrap">
-      <h2>How fast can you recover your fees?</h2>
-      <p class="intro">Enter what your degree costs. The calculator shows how long it takes to earn that back at each package.</p>
-      <div class="calc">
-        <div>
-          <div class="ctl">
-            <div class="lab"><label for="cYear">Cost per year</label><output id="oYear"></output></div>
-            <input id="cYear" type="range" min="1" max="5" step="0.25" value="3">
-            <div class="presets">
-              <button class="chip" type="button" id="pFees">College fees only: 1.5 L</button>
-              <button class="chip" type="button" id="pHostel">Fees and hostel: 3 L</button>
-            </div>
-          </div>
-          <div class="ctl">
-            <div class="lab"><label for="cYears">Years of study</label><output id="oYears"></output></div>
-            <input id="cYears" type="range" min="2" max="6" step="1" value="4">
-          </div>
-          <div class="ctl">
-            <div class="lab"><label for="cTake">Take-home share of package</label><output id="oTake"></output></div>
-            <input id="cTake" type="range" min="60" max="90" step="1" value="75">
-            <p class="help">IT-services roles typically take home about 70 to 80 percent of CTC.</p>
-          </div>
-          <div class="ctl">
-            <div class="lab"><label for="cExp">Monthly expenses after joining (&#8377;)</label></div>
-            <input id="cExp" type="number" min="0" step="1000" value="0">
-            <p class="help">Optional. Leave at 0 to ignore living costs.</p>
-          </div>
-          <div class="total"><span>Total spent on the degree</span><strong id="oTotal"></strong></div>
-        </div>
-        <div>
-          <div class="res" id="calcRes" aria-live="polite"></div>
-          <h3 class="sub-h">Time to recover, by package</h3>
-          <div class="pkg-list" id="recList"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec alt">
-    <div class="wrap">
-      <h2>The band you land in is decided by preparation</h2>
-      <p class="intro">The gap between the lowest and highest bands at the same company comes down to test scores and coding ability.</p>
-      <ul class="band-list">
-        <li><strong>TCS</strong><span>One test, the NQT. Your score decides whether you get Ninja, Digital or Prime.</span></li>
-        <li><strong>Wipro</strong><span>Turbo uses the same exam as Elite, with a higher cutoff and an advanced coding round.</span></li>
-        <li><strong>Infosys</strong><span>Specialist Programmer and Digital Specialist Engineer roles have tougher coding rounds than System Engineer.</span></li>
-        <li><strong>Zoho</strong><span>Aptitude and coding rounds first, then technical and HR interviews.</span></li>
-      </ul>
-      <p class="intro">Aptitude, DSA, projects and mock interviews are exactly what this program trains, from the first weekend.</p>
-      <div class="cta-row">
-        <a class="btn btn-ink" href="#/roadmap">See the roadmap</a>
-        <a class="btn btn-line" href="#/placement">See placement prep</a>
-      </div>
-    </div>
-  </section>
-</section>
-
 <!-- ======================= OUTCOMES ======================= -->
 <section class="page" id="page-outcomes" hidden>
   <div class="wrap">
@@ -896,6 +911,16 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
 </section>
 
 </main>
+
+<div class="modal" id="ivModal" role="dialog" aria-modal="true" aria-labelledby="ivTitle" hidden>
+  <div class="modal-box" id="ivBox">
+    <button class="modal-x" id="ivClose" type="button" aria-label="Close">&times;</button>
+    <h3 id="ivTitle"></h3>
+    <p class="sub" id="ivSub"></p>
+    <div class="iv-list" id="ivList"></div>
+    <p class="fine" id="ivNote"></p>
+  </div>
+</div>
 
 <footer class="foot dark">
   <div class="wrap">
@@ -1163,8 +1188,7 @@ const REASONS = [
   { t: 'Real projects, not tutorial copies', d: 'Frontend, backend, database, authentication and deployment combined into applications you can demonstrate in interviews.', href: '#/build', go: 'See what you will build' },
   { t: 'Weekends to learn, weekdays to practice', d: 'Saturday teaching, Sunday hands-on building, then small tasks all week.', href: '#/weekly', go: 'See a typical week' },
   { t: 'AI that sharpens your understanding', d: 'Use AI to learn, debug and build, and be able to explain every important piece of code you submit.', href: '#/roadmap/9', go: 'See the AI module' },
-  { t: 'Interview practice all the way through', d: 'Four levels of mock interviews, group discussions, aptitude practice, a resume and a portfolio.', href: '#/placement', go: 'See placement prep' },
-  { t: 'Know what the right preparation is worth', d: 'Compare what companies offer freshers, and how quickly each package pays back your college fees.', href: '#/packages', go: 'Open the calculator' }
+  { t: 'Interview practice all the way through', d: 'Four levels of mock interviews, group discussions, aptitude practice, a resume and a portfolio.', href: '#/placement', go: 'See placement prep' }
 ];
 
 const LANES = ['Python', 'Frontend', 'Backend', 'Database', 'Projects', 'Deployment', 'Resume and portfolio', 'Mock interviews'];
@@ -1275,7 +1299,6 @@ const PAGES = [
   { id: 'build', label: 'Build' },
   { id: 'weekly', label: 'Weekly plan' },
   { id: 'placement', label: 'Placement' },
-  { id: 'packages', label: 'Packages' },
   { id: 'outcomes', label: 'Outcomes' }
 ];
 
@@ -1633,6 +1656,151 @@ function buildPlacement() {
 /* ============================================================
    Packages and fee calculator
 ============================================================ */
+const IV = (() => {
+  const L = (s, t, u, n) => ({ s, t, u, n });
+  const GFG = 'https://www.geeksforgeeks.org/?p=';
+  const ninja = [
+    L('GeeksforGeeks', 'TCS Ninja interview experience, off-campus 2022', GFG + '1050661', 'A short Ninja interview with OOPS, linked list and hashmap questions.'),
+    L('GeeksforGeeks', 'TCS Ninja interview experience, NQT 2020', GFG + '534042'),
+    L('GeeksforGeeks', 'TCS Ninja interview experience, TR and MR rounds', GFG + '339376'),
+    L('GeeksforGeeks', 'TCS Ninja interview experience', GFG + '1141085'),
+    L('PlacementPreparation', 'TCS Ninja interview experiences', 'https://placementpreparation.io/tcs-ninja/interview-experience'),
+    L('Glassdoor', 'TCS Ninja interview, Chennai', 'https://www.glassdoor.es/Entrevista/Tata-Consultancy-Services-Entrevista-E13461-RVW101596860.htm', 'English text on a Spanish-language page.')
+  ];
+  const digital = [
+    L('GeeksforGeeks', 'TCS Digital profile interview experience, on-campus 2024', 'https://geeksforgeeks.org/tcs-digital-profile-interview-experience-on-campus-2024', 'SQL, DSA and project questions.'),
+    L('GeeksforGeeks', 'TCS Digital interview experience', GFG + '1046245'),
+    L('GeeksforGeeks', 'TCS Digital interview experience, online test and technical round', GFG + '330051'),
+    L('GeeksforGeeks', 'TCS Digital interview experience, off-campus', GFG + '470744'),
+    L('LeetCode', 'TCS Digital through CodeVita, 7 LPA', 'https://leetcode.com/discuss/interview-experience/3082861'),
+    L('PlacementPreparation', 'TCS Digital interview experiences', 'https://placementpreparation.io/blog/?p=7434')
+  ];
+  const prime = [
+    L('GeeksforGeeks', 'TCS Prime on-campus interview experience, 2024', GFG + '1168227', 'Includes the NQT pattern.'),
+    L('GeeksforGeeks', 'TCS Prime interview experience', GFG + '1209850'),
+    L('LeetCode', 'TCS Prime interview experience, 2025 drive', 'https://leetcode.com/discuss/interview-experience/6865885', 'A direct technical round with DSA questions.'),
+    L('LeetCode', 'TCS Prime on-campus interview experience', 'https://leetcode.com/discuss/interview-experience/4735459', 'Compares Ninja, Digital and Prime.'),
+    L('LeetCode', 'TCS Prime interview experience, Lucknow', 'https://leetcode.com/discuss/interview-experience/7511998', 'A candidate reports how hard Prime selection is.'),
+    L('PrepInsta', 'TCS Prime interview experience', 'https://prepinsta.com/interview-preparation/tcs-prime-interview-experience/'),
+    L('PlacementPreparation', 'TCS Prime interview experiences', 'https://placementpreparation.io/tcs-prime/interview-experience')
+  ];
+  const se = [
+    L('Naukri Campus', 'Infosys Systems Engineer interview experience', 'https://naukri.com/campus/career-guidance/infosys-systems-engineer-interview-experience'),
+    L('Naukri Campus', 'Infosys interview questions for System Engineer trainee', 'https://naukri.com/campus/career-guidance/infosys-interview-questions-for-system-engineer-trainee'),
+    L('FACE Prep', 'Infosys interview guide for freshers', 'https://faceprep.in/article/crack-infosys-interviews-2025-ultimate-guide-for-freshers-face-prep/'),
+    L('Glassdoor', 'Infosys Systems Engineer interview reviews', 'https://www.glassdoor.ie/Interview/Infosys-Interview-E7927-RVW2734753.htm')
+  ];
+  const dse = [
+    L('Naukri Code360', 'Infosys SP / DSE interview experience, on-campus Dec 2025', 'https://www.naukri.com/code360/interview-experiences/infosys-pvt-limited/interview-experience-by-shivam-krishna-srivastava-on-campus-dec-2025', 'Focuses on DSA, SQL and internships.'),
+    L('Naukri Code360', 'Infosys DSE interview experience, on-campus Jul 2025', 'https://www.naukri.com/code360/interview-experiences/infosys-india-pvt-ltd/interview-experience-by-shivam-krishna-srivastava-on-campus-jul-2025')
+  ];
+  const sp = [
+    L('LeetCode', 'Infosys Specialist Programmer, HackWithInfy route', 'https://leetcode.com/discuss/interview-experience/2822960'),
+    L('Naukri Code360', 'Infosys Specialist Programmer, on-campus Jun 2025', 'https://www.naukri.com/code360/interview-experiences/infosys/interview-experience-on-campus-jun-2025-2-9839', 'The writer says DSA is the key for this role.'),
+    L('Naukri Code360', 'Infosys Specialist Programmer, on-campus Apr 2024', 'https://www.naukri.com/code360/interview-experiences/infosys/infosys-interview-experience-on-campus-apr-2024'),
+    L('Naukri Code360', 'Infosys Specialist Programmer, Jan 2023', 'https://www.naukri.com/code360/interview-experiences/infosys-technologies-limited/infosys-interview-experience-specialist-programmer-jan-2023-exp-0-2-years'),
+    L('Glassdoor', 'Infosys Specialist Programmer interview', 'https://www.glassdoor.com.mx/Entrevista/Infosys-Entrevista-E7927-RVW92815654.htm')
+  ];
+  const elite = [
+    L('GeeksforGeeks', 'Wipro Elite NTH interview experience, off-campus', GFG + '367021'),
+    L('PlacementPreparation', 'Wipro Elite NTH interview experiences', 'https://placementpreparation.io/blog/?p=6828')
+  ];
+  const turbo = [
+    L('GeeksforGeeks', 'Wipro interview experience, off-campus, Turbo upgrade', GFG + '394922', 'The coding section of the Elite test opened the Turbo chance.'),
+    L('GeeksforGeeks', 'Wipro interview experience, off-campus', 'https://geeksforgeeks.org/wipro-interview-experience-off-campus'),
+    L('GeeksforGeeks', 'Wipro Turbo hiring interview experience, on-campus', GFG + '224986', 'An older account.'),
+    L('Jobrise', 'Wipro interview guide for freshers, 2026', 'https://jobrise.io/en/blog/wipro-interview-questions-freshers-2026/', 'Covers Elite, Turbo and WILP.'),
+    L('Glassdoor', 'Wipro Project Engineer interview questions', 'https://static.glassdoor.nl/Interview/Wipro-Project-Engineer-Interview-Questions-EI_IE9936.0,5_KO6,22_IP36.htm')
+  ];
+  const techm = [
+    L('Naukri Code360', 'Tech Mahindra Associate Software Engineer, off-campus Oct 2023', 'https://www.naukri.com/code360/interview-experiences/tech-mahindra/tech-mahindra-interview-experience-off-campus-oct-2023'),
+    L('Glassdoor', 'Tech Mahindra Associate Software Engineer interview', 'https://www.glassdoor.co.uk/Interview/Tech-Mahindra-Interview-E135932-RVW5679138.htm'),
+    L('Glassdoor', 'Tech Mahindra Associate Software Engineer interview', 'https://www.glassdoor.ca/Interview/Tech-Mahindra-Interview-E135932-RVW21042279.htm'),
+    L('Glassdoor', 'Tech Mahindra Associate Software Engineer interview', 'https://static.glassdoor.com.mx/Interview/Tech-Mahindra-Interview-E135932-RVW11036406.htm')
+  ];
+  const zoho = [
+    L('GeeksforGeeks', 'Zoho software developer interview experience, off-campus 2024', GFG + '1199887'),
+    L('LeetCode', 'Zoho off-campus interview experience, 2025', 'https://leetcode.com/discuss/interview-experience/6624506'),
+    L('LeetCode', 'Zoho MTS, software developer fresher, Chennai', 'https://leetcode.com/discuss/interview-experience/1571508/zoho-mtssoftware-developerfresher-chennai-offer', 'Round-by-round process, including the design round.'),
+    L('LeetCode', 'Zoho software developer fresher, 2021', 'https://leetcode.com/discuss/interview-experience/1554605/zoho-software-developer-fresher2021'),
+    L('PlacementPreparation', 'Zoho interview experience', 'https://placementpreparation.io/zoho/interview-experience'),
+    L('Naukri Code360', 'Zoho on-campus interview experience, Dec 2021', 'https://www.naukri.com/code360/interview-experiences/zoho-corporation/interview-experience-on-campus-dec-2021-2-4116'),
+    L('Glassdoor', 'Zoho fresher software engineer interview, Chennai', 'https://www.glassdoor.sg/Interview/Zoho-Interview-E328604-RVW97835899.htm')
+  ];
+  const amazon = [
+    L('LeetCode', 'Amazon SDE1 India, new grad, April 2021', 'https://leetcode.com/discuss/interview-experience/1220940/amazon-sde1-india-april2021-reject'),
+    L('LeetCode', 'Amazon SDE-1 India, March 2022 offer', 'https://leetcode.com/discuss/interview-experience/1826515/amazon-sde-1-india-march-2022-offer'),
+    L('LeetCode', 'Amazon SDE1 Hyderabad, April 2021 offer', 'https://leetcode.com/discuss/interview-experience/1176426/amazon-sde1-hyderabad-april-2021-offer'),
+    L('GeeksforGeeks', 'Amazon interview experience for SDE 1', GFG + '1039171'),
+    L('Medium', 'Amazon SDE-1 off-campus interview experience', 'https://vinscoder1627.medium.com/amazon-sde-1-off-campus-interview-experience-selected-c111ca8a6689'),
+    L('LeetCode', 'Amazon SDE-1 Bengaluru, October', 'https://leetcode.com/discuss/interview-experience/1534171/amazon-sde-1-bengaluru-india-octoberrejected')
+  ];
+  const google = [
+    L('LeetCode', 'Google Software Engineer L3 India, final-year IIT', 'https://leetcode.com/discuss/compensation/961127/google-software-engineer-l3-india', 'The closest to a fresher, with a link to the interview write-up.'),
+    L('LeetCode', 'Google L3 SWE India interview experience', 'https://leetcode.com/discuss/post/8345294/google-l3-swe-india-interview-experience-z8un/', 'About 1.7 years of experience.'),
+    L('LeetCode', 'Google L3 Bengaluru, Oct 2025 offer', 'https://leetcode.com/discuss/post/7327604/google-l3-interview-experience-bengaluru-cd1z/'),
+    L('LeetCode', 'Google L3 Bangalore, Nov 2021 offer', 'https://leetcode.com/discuss/interview-experience/1614825/google-l3-bangalore-nov-2021-offer'),
+    L('LeetCode', 'Google L3 Bangalore, July to August 2020', 'https://leetcode.com/discuss/interview-experience/908227/google-software-engineer-l3-bangalore-july-august-2020-passed'),
+    L('LeetCode', 'Google L3 Bangalore, April 2024', 'https://leetcode.com/discuss/post/5089279/google-l3-banglore-apr-2024-reject-by-ds-n6ua/')
+  ];
+  return {
+    'tcs-ninja': ninja, 'tcs-digital': digital, 'tcs-prime': prime,
+    'infy-se': se, 'infy-dse': dse, 'infy-sp1': sp, 'infy-sp2': sp, 'infy-sp3': sp,
+    'wipro-elite': elite, 'wipro-turbo': turbo,
+    'techm-std': techm, 'techm-high': techm,
+    'zoho': zoho, 'amazon': amazon, 'google': google
+  };
+})();
+
+const IV_EXTRA = {
+  'techm-high': 'I could not find experiences for the higher tracks, so these are for the standard Associate Software Engineer role.',
+  'infy-sp1': 'Candidates write "Specialist Programmer" without a level, so L1, L2 and L3 share these.',
+  'infy-sp2': 'Candidates write "Specialist Programmer" without a level, so L1, L2 and L3 share these.',
+  'infy-sp3': 'Candidates write "Specialist Programmer" without a level, so L1, L2 and L3 share these.',
+  'google': 'Most of these are from people with one to three years of experience, because Google hires very few pure freshers in India.'
+};
+
+let ivReturn = null;
+function closeInterviews() {
+  const m = $('#ivModal');
+  if (m.hidden) return;
+  m.hidden = true;
+  document.body.classList.remove('modal-open');
+  if (ivReturn && ivReturn.focus) ivReturn.focus();
+  ivReturn = null;
+}
+function openInterviews(o, trigger, color) {
+  const m = $('#ivModal');
+  ivReturn = trigger || null;
+  $('#ivBox').style.setProperty('--bc', color);
+  $('#ivTitle').textContent = o.co + ': ' + o.track;
+  $('#ivSub').textContent = 'Interview experiences written by candidates. Each link opens in a new tab.';
+  const list = $('#ivList'); list.innerHTML = '';
+  (IV[o.id] || []).forEach(x => list.append(el('a', { href: x.u, target: '_blank', rel: 'noopener noreferrer' },
+    el('strong', { text: x.t }), el('span', { class: 'iv-src', text: x.s }), x.n ? el('span', { class: 'iv-note', text: x.n }) : null)));
+  $('#ivNote').textContent = (IV_EXTRA[o.id] ? IV_EXTRA[o.id] + ' ' : '') + 'These are personal accounts, and some are a few years old, so check the date and treat them as a guide.';
+  m.hidden = false;
+  document.body.classList.add('modal-open');
+  $('#ivBox').scrollTop = 0;
+  $('#ivClose').focus();
+}
+function initInterviewModal() {
+  $('#ivClose').addEventListener('click', closeInterviews);
+  $('#ivModal').addEventListener('click', e => { if (e.target.id === 'ivModal') closeInterviews(); });
+  document.addEventListener('keydown', e => {
+    const m = $('#ivModal');
+    if (m.hidden) return;
+    if (e.key === 'Escape') { closeInterviews(); return; }
+    if (e.key === 'Tab') {
+      const f = $$('a[href], button', m).filter(x => !x.disabled);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  });
+}
+
 const lakh = n => String(Math.round(n * 100) / 100);
 const rupeeL = n => '\u20B9' + lakh(n) + ' L';
 const inr = n => '\u20B9' + Math.round(n).toLocaleString('en-IN');
@@ -1652,19 +1820,41 @@ function buildPackages() {
   function mark() { $$('.pkg').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === pk.sel))); }
   function select(id) { pk.sel = id; mark(); drawDetail(); drawResult(); }
 
-  function row(o, valText, pct) {
+  function row(o, valText, pct, showPkg) {
     return el('button', { class: 'pkg', type: 'button', 'data-id': o.id, 'aria-pressed': String(o.id === pk.sel), style: '--bc:' + BANDS[o.band].c, onclick: () => select(o.id) },
-      el('span', { class: 'pkg-name' }, el('strong', { text: o.co }), el('span', { text: o.track })),
+      el('span', { class: 'pkg-name' }, el('strong', { text: o.co }), el('span', { text: o.track }), showPkg ? el('span', { class: 'pkg-ctc', text: '\u20B9' + o.range + ' LPA' }) : null),
       el('span', { class: 'pkg-bar', 'aria-hidden': 'true' }, el('i', { style: 'width:' + pct + '%' })),
       el('span', { class: 'pkg-val', text: valText }));
   }
 
   /* offers list */
   const filters = $('#pkgFilters'), list = $('#pkgList');
+  let ivTimer = null, ivShown = null;
+  function setIv(btn, on) { btn.classList.toggle('show', on); btn.parentElement.classList.toggle('open', on); }
+  function hideIv() {
+    clearTimeout(ivTimer); ivTimer = null;
+    if (ivShown) { setIv(ivShown, false); ivShown = null; }
+  }
+  function flashIv(btn) {
+    if (ivShown && ivShown !== btn) setIv(ivShown, false);
+    clearTimeout(ivTimer);
+    setIv(btn, true); ivShown = btn;
+    ivTimer = setTimeout(() => { setIv(btn, false); if (ivShown === btn) ivShown = null; ivTimer = null; }, 10000);
+  }
+  function ivBtn(o) {
+    const b = el('button', { class: 'iv-btn', type: 'button', 'aria-label': 'Interview experiences for ' + o.co + ' ' + o.track }, 'Interview experiences');
+    b.addEventListener('click', () => { hideIv(); openInterviews(o, b, BANDS[o.band].c); });
+    return b;
+  }
   function drawList() {
+    hideIv();
     list.innerHTML = '';
     sorted.filter(o => pk.band === 'all' || o.band === pk.band)
-      .forEach(o => list.append(row(o, '\u20B9' + o.range + ' LPA', Math.max(2, o.ctc / 50 * 100))));
+      .forEach(o => {
+        const r = row(o, '\u20B9' + o.range + ' LPA', Math.max(2, o.ctc / 50 * 100)), b = ivBtn(o);
+        r.addEventListener('click', () => flashIv(b));
+        list.append(el('div', { class: 'pkg-item' }, r, b));
+      });
   }
   [['all', 'All']].concat(Object.entries(BANDS).map(([k, b]) => [k, b.name])).forEach(([k, label]) => {
     filters.append(el('button', { class: 'chip', type: 'button', 'data-b': k, 'aria-pressed': String(k === 'all'),
@@ -1718,7 +1908,7 @@ function buildPackages() {
     rec.innerHTML = '';
     sorted.forEach(x => {
       const y = calc(x).y;
-      rec.append(row(x, yrs(y), isFinite(y) ? Math.max(3, y / maxY * 100) : 100));
+      rec.append(row(x, yrs(y), isFinite(y) ? Math.max(3, y / maxY * 100) : 100, true));
     });
   }
   function drawInputs() {
@@ -1792,6 +1982,7 @@ buildBuild();
 buildWeekly();
 buildPlacement();
 buildPackages();
+initInterviewModal();
 buildOutcomes();
 window.addEventListener('hashchange', route);
 route();
