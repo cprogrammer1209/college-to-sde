@@ -135,7 +135,7 @@ button.chip[aria-pressed="true"]{background:var(--learn);border-color:var(--lear
 
 .route{--d:28px;margin-top:72px;position:relative}
 .route-rail{position:absolute;left:calc(var(--d)/2);right:calc(var(--d)/2);top:calc(var(--d)/2 - 3px);height:6px;border-radius:3px;background:rgba(255,255,255,.14)}
-.route-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:var(--signal);transition:width .26s linear}
+.route-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:3px;background:var(--signal);transition:width 1s linear}
 .route-row{position:relative;display:flex;justify-content:space-between}
 .stn{display:flex;flex-direction:column;align-items:center;gap:10px;width:var(--d);padding:0;background:none;border:0;cursor:pointer}
 .stn i{display:block;width:var(--d);height:var(--d);border-radius:50%;border:4px solid var(--cl);background:var(--ink);transition:background .2s,transform .2s}
@@ -1335,23 +1335,29 @@ function defaultCaption() {
   const a = $('#capLink'); a.href = '#/roadmap'; a.textContent = 'Open the roadmap';
   $$('.stn').forEach(s => s.classList.remove('sel'));
 }
+const ROUTE_STEP = 1000;   /* milliseconds between one station and the next */
+function setFill(pct, animate) {
+  const f = $('#routeFill');
+  if (!animate) { f.style.transition = 'none'; f.style.width = pct + '%'; void f.offsetWidth; f.style.transition = ''; }
+  else f.style.width = pct + '%';
+}
 function finishRoute() {
   routeTimers.forEach(clearTimeout); routeTimers = [];
   $$('.stn').forEach(s => s.classList.add('on'));
-  $('#routeFill').style.width = '100%';
+  setFill(100, false);
 }
 function playRoute() {
   routeTimers.forEach(clearTimeout); routeTimers = [];
-  const stns = $$('.stn'), fill = $('#routeFill');
+  const stns = $$('.stn'), last = stns.length - 1;
   if (reduced) { finishRoute(); defaultCaption(); return; }
   stns.forEach(s => s.classList.remove('on'));
-  fill.style.width = '0%';
+  setFill(0, false);
   stns.forEach((s, i) => routeTimers.push(setTimeout(() => {
     s.classList.add('on');
-    fill.style.width = (i / (stns.length - 1) * 100) + '%';
+    setFill(Math.min(i + 1, last) / last * 100, true);   /* the line travels toward the next station */
     setCaption(i + 1);
-  }, 500 + i * 260)));
-  routeTimers.push(setTimeout(defaultCaption, 500 + stns.length * 260 + 1000));
+  }, 500 + i * ROUTE_STEP)));
+  routeTimers.push(setTimeout(defaultCaption, 500 + stns.length * ROUTE_STEP + 1000));
 }
 function buildRoute() {
   const row = $('#routeRow');
@@ -1366,7 +1372,7 @@ function buildRoute() {
     stn.addEventListener('click', show);
     row.append(stn);
   });
-  $('#routeFill').style.width = '100%';
+  setFill(100, false);
   $('#replay').addEventListener('click', playRoute);
   const legend = $('#legend');
   Object.entries(GROUPS).forEach(([k, g]) => {
